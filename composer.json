@@ -1,0 +1,20 @@
+{
+    "name": "grnhse/greenhouse-job-board-api-php",
+    "type": "library",
+    "description": "A PHP wrapper for Greenhouse's Job Board API",
+    "keywords": ["api", "greenhouse", "job board"],
+    "homepage": "https://github.com/grnhse/greenhouse-job-board-api-php",
+    "authors": [
+        {
+            "name": "Greenhouse"
+        },
+        {
+            "name": "Tom Phillips"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "guzzlehttp/guzzle": "~6.0",
+        "phpunit/phpunit": "4.5.*"
+    }
+}
