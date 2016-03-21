@@ -32,22 +32,21 @@ class GuzzleClient implements ApiClientInterface
      * @params  string  $url        A relative URL off the base URL. A full URL 
      *                                  should work, too
      * @return  string  The Raw JSON response from Greenhouse
-     * @throws  GreenhouseAPIClientException if URL is blank.
-     * @raise   GreenhouseAPIResponseException  if the get request fails
+     * @throws  GreenhouseAPIResponseException  if the get request fails
      */
     public function get($url="")
     {
-        if (empty($url)) {
-            throw new GreenhouseAPIClientException('Url must be set for get method.');
-        }
-        
         try {
             $guzzleResponse = $this->_client->request('GET', $url);
         } catch (RequestException $e) {
             throw new GreenhouseAPIResponseException($e->getMessage());
         }
         
-        return $guzzleResponse->getBody();
+        /**
+         * Just return the response cast as a string.  The rest of the universe need
+         * not be aware of Guzzle's details.
+         */
+        return (string) $guzzleResponse->getBody();
     }
     
     public function post()
