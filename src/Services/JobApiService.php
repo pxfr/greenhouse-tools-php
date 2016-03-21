@@ -4,7 +4,6 @@ namespace Greenhouse\GreenhouseJobBoardPhp\Services;
 
 use Greenhouse\GreenhouseJobBoardPhp\Services\ApiService;
 use Greenhouse\GreenhouseJobBoardPhp\Clients\GuzzleClient;
-use Greenhouse\GreenhouseJobBoardPhp\Services\Exceptions\GreenhouseServiceException;
 
 /**
  * This class interacts with Greenhouse's job board API.  This class interacts with the GET
