@@ -4,8 +4,6 @@ namespace Greenhouse\GreenhouseJobBoardPhp\Services;
 
 class JobBoardService
 {
-    private $_clientToken;
-    
     public function __construct($clientToken)
     {
         $this->_clientToken = $clientToken;

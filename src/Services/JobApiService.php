@@ -13,8 +13,6 @@ use Greenhouse\GreenhouseJobBoardPhp\Clients\GuzzleClient;
  */
 class JobApiService extends ApiService
 {
-    private $_clientToken;
-    
     /**
      * The client token is your job board token.  For instance in the following
      * API get URL: https://api.greenhouse.io/v1/boards/example_co/embed/

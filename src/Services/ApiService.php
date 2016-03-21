@@ -8,6 +8,8 @@ use Greenhouse\GreenhouseJobBoardPhp\Services\Exceptions\GreenhouseServiceExcept
 class ApiService
 {
     protected $_apiClient;
+    protected $_clientToken;
+    protected $_apiKey;
     
     public function setClient($apiClient)
     {
