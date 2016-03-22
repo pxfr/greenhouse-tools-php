@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Tests\Services;
+namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 
-use Greenhouse\GreenhouseJobBoardPhp\Services\JobBoardService;
+use Greenhouse\GreenhouseToolsPhp\Services\JobBoardService;
 
 class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
 {

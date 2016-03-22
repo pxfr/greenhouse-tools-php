@@ -1,6 +1,6 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Services;
+namespace Greenhouse\GreenhouseToolsPhp\Services;
 
 class JobBoardService
 {
