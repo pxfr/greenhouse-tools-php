@@ -36,13 +36,13 @@ class GreenhouseService
      */
     public function getApplicationApiService()
     {
-        $applicationService = new \Greenhouse\GreenhouseJobBoardPhp\Services\ApplicationService($this->_apiKey);
+        $applicationService = new \Greenhouse\GreenhouseJobBoardPhp\Services\ApplicationService($this->_apiKey, $this->_boardToken);
         $apiClient  = new GuzzleClient(array(
             'base_uri' => 'https://api.greenhouse.io/v1/applications/'
         ));
-        $apiService->setClient($apiClient);
+        $applicationService->setClient($apiClient);
         
-        return $apiService;
+        return $applicationService;
     }
     
     public function getJobBoardService()

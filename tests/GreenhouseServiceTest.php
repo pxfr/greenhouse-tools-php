@@ -3,6 +3,7 @@
 namespace Greenhouse\GreenhouseJobBoardPhp\Tests;
 
 use Greenhouse\GreenhouseJobBoardPhp\GreenhouseService;
+use Greenhouse\GreenhouseJobBoardPhp\Services\ApiService;
 
 class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,55 +40,20 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
             $service->getJobBoardBaseUrl()
         );
         
-        $this->assertInstanceOf('\GuzzleHttp\Client', $service->getClient());
+        $this->assertInstanceOf('\Greenhouse\GreenhouseJobBoardPhp\Clients\GuzzleClient', $service->getClient());
     }
     
-    public function testGetJobBoardService()
+    public function testGetApplicationService()
     {
-        $service = $this->greenhouseService->getJobBoardService();
+        $service = $this->greenhouseService->getApplicationApiService();
         $this->assertInstanceOf(
-            '\Greenhouse\GreenhouseJobBoardPhp\Services\JobBoardService',
+            '\Greenhouse\GreenhouseJobBoardPhp\Services\ApplicationService',
             $service
         );
-        $this->assertContains($this->boardToken, $service->scriptTag());
+        
+        $baseUrl = ApiService::jobBoardBaseUrl($this->boardToken);
+        $authHeader = 'Basic ' . base64_encode($this->apiKey);
+        $this->assertEquals($baseUrl, $service->getJobBoardBaseUrl());
+        $this->assertEquals($authHeader, $service->getAuthorizationHeader());
     }
-
 }
-
-/**
-
-<?php
-
-namespace Greenhouse\GreenhouseJobBoardPhp;
-
-class GreenhouseService
-{
-    private $_apiKey;
-    private $_boardToken;
-    
-    public function __construct($options=array())
-    {
-        $this->_apiKey = $options['apiKey'];
-        $this->_boardToken = $options['boardToken'];
-    }
-    
-    public function getApiService($boardToken='')
-    {
-    
-    }
-    
-    public function getApplicationService($apiKey='')
-    {
-    
-    }
-    
-    public function getJobBoardService()
-    {
-        return new \Greenhouse\GreenhouseJobBoardPhp\Services\JobBoardService($this->_boardToken);
-    }
-    
-    public function getFormService()
-    {
-    
-    }
-}**/
