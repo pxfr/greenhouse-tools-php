@@ -1,7 +1,7 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions;
+namespace Greenhouse\GreenhouseToolsPhp\Clients\Exceptions;
 
-use Greenhouse\GreenhouseJobBoardPhp\Exceptions\GreenhouseException;
+use Greenhouse\GreenhouseToolsPhp\Exceptions\GreenhouseException;
 
 class GreenhouseAPIResponseException extends GreenhouseException {}
