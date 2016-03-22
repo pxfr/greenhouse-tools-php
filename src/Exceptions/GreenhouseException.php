@@ -1,5 +1,5 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Exceptions;
+namespace Greenhouse\GreenhouseToolsPhp\Exceptions;
 
 class GreenhouseException extends \Exception {}
