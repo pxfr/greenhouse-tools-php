@@ -1,9 +1,9 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Tests;
+namespace Greenhouse\GreenhouseToolsPhp\Tests;
 
-use Greenhouse\GreenhouseJobBoardPhp\GreenhouseService;
-use Greenhouse\GreenhouseJobBoardPhp\Services\ApiService;
+use Greenhouse\GreenhouseToolsPhp\GreenhouseService;
+use Greenhouse\GreenhouseToolsPhp\Services\ApiService;
 
 class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
     {
         $service = $this->greenhouseService->getJobBoardService();
         $this->assertInstanceOf(
-            '\Greenhouse\GreenhouseJobBoardPhp\Services\JobBoardService',
+            '\Greenhouse\GreenhouseToolsPhp\Services\JobBoardService',
             $service
         );
         $this->assertContains($this->boardToken, $service->scriptTag());
@@ -31,7 +31,7 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
     {
         $service = $this->greenhouseService->getJobApiService();
         $this->assertInstanceOf(
-            '\Greenhouse\GreenhouseJobBoardPhp\Services\JobApiService',
+            '\Greenhouse\GreenhouseToolsPhp\Services\JobApiService',
             $service
         );
         
@@ -40,14 +40,14 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
             $service->getJobBoardBaseUrl()
         );
         
-        $this->assertInstanceOf('\Greenhouse\GreenhouseJobBoardPhp\Clients\GuzzleClient', $service->getClient());
+        $this->assertInstanceOf('\Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient', $service->getClient());
     }
     
     public function testGetApplicationService()
     {
         $service = $this->greenhouseService->getApplicationApiService();
         $this->assertInstanceOf(
-            '\Greenhouse\GreenhouseJobBoardPhp\Services\ApplicationService',
+            '\Greenhouse\GreenhouseToolsPhp\Services\ApplicationService',
             $service
         );
         

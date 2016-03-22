@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp;
+namespace Greenhouse\GreenhouseToolsPhp;
 
-use Greenhouse\GreenhouseJobBoardPhp\Clients\GuzzleClient;
+use Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient;
 
 class GreenhouseService
 {
@@ -21,7 +21,7 @@ class GreenhouseService
      */
     public function getJobApiService()
     {
-        $apiService = new \Greenhouse\GreenhouseJobBoardPhp\Services\JobApiService($this->_boardToken);
+        $apiService = new \Greenhouse\GreenhouseToolsPhp\Services\JobApiService($this->_boardToken);
         $apiClient  = new GuzzleClient(array(
             'base_uri' => "https://api.greenhouse.io/v1/boards/{$this->_boardToken}/embed/"
         ));
@@ -36,7 +36,7 @@ class GreenhouseService
      */
     public function getApplicationApiService()
     {
-        $applicationService = new \Greenhouse\GreenhouseJobBoardPhp\Services\ApplicationService($this->_apiKey, $this->_boardToken);
+        $applicationService = new \Greenhouse\GreenhouseToolsPhp\Services\ApplicationService($this->_apiKey, $this->_boardToken);
         $apiClient  = new GuzzleClient(array(
             'base_uri' => 'https://api.greenhouse.io/v1/applications/'
         ));
@@ -47,6 +47,6 @@ class GreenhouseService
     
     public function getJobBoardService()
     {
-        return new \Greenhouse\GreenhouseJobBoardPhp\Services\JobBoardService($this->_boardToken);
+        return new \Greenhouse\GreenhouseToolsPhp\Services\JobBoardService($this->_boardToken);
     }
 }
