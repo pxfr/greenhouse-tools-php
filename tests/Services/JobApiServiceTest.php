@@ -1,8 +1,8 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Tests\Services;
+namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 
-use Greenhouse\GreenhouseJobBoardPhp\Services\JobApiService;
+use Greenhouse\GreenhouseToolsPhp\Services\JobApiService;
 
 class JobApiServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class JobApiServiceTest extends \PHPUnit_Framework_TestCase
     
     public function testConstructorRequiresToken()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Services\Exceptions\GreenhouseServiceException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
         $service = new JobApiService();
     }
     
@@ -53,43 +53,43 @@ class JobApiServiceTest extends \PHPUnit_Framework_TestCase
     
     public function testGetOfficesException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getOffices();
     }
     
     public function testGetOfficeException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getOffice(12345);
     }
     
     public function testGetDepartmentsException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getDepartments();
     }
     
     public function testGetDepartmentException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getDepartment(12345);
     }
     
     public function testGetBoardException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getBoard();
     }
     
     public function testGetJobsException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getJobs();
     }
     
     public function testGetJobException()
     {
-        $this->expectException('\Greenhouse\GreenhouseJobBoardPhp\Clients\Exceptions\GreenhouseAPIResponseException');
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $this->errorService->getJob(1);
     }
     
