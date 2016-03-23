@@ -8,8 +8,8 @@ class CurlClientTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->client = new CurlClient();
-        $this->resumePath = realpath(dirname(__FILE__)) . '/../files/documents/test_resume.docx';
+        $this->client       = new CurlClient();
+        $this->resumePath   = realpath(dirname(__FILE__)) . '/../files/documents/test_resume.docx';
     }
 
     public function testGuzzleInitialize()
