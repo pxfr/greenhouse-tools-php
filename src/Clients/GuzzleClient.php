@@ -13,6 +13,8 @@ use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseExcept
  */
 class GuzzleClient implements ApiClientInterface
 {
+    private $_client;
+    
     /**
      * Constructor should receive an array that would be understood by the Guzzle
      * client constructor.  Constructor hands off an unmodified array to the Guzzle
