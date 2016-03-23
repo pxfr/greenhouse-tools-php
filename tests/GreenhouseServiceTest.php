@@ -52,7 +52,7 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
         );
         
         $baseUrl = ApiService::jobBoardBaseUrl($this->boardToken);
-        $authHeader = 'Basic ' . base64_encode($this->apiKey);
+        $authHeader = 'Basic ' . base64_encode($this->apiKey . ':');
         $this->assertEquals($baseUrl, $service->getJobBoardBaseUrl());
         $this->assertEquals($authHeader, $service->getAuthorizationHeader());
     }
