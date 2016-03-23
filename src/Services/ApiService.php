@@ -1,9 +1,9 @@
 <?php
 
-namespace Greenhouse\GreenhouseJobBoardPhp\Services;
+namespace Greenhouse\GreenhouseToolsPhp\Services;
 
-use Greenhouse\GreenhouseJobBoardPhp\Services\ApiService;
-use Greenhouse\GreenhouseJobBoardPhp\Services\Exceptions\GreenhouseServiceException;
+use Greenhouse\GreenhouseToolsPhp\Services\ApiService;
+use Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException;
 
 class ApiService
 {
@@ -11,26 +11,72 @@ class ApiService
     protected $_clientToken;
     protected $_apiKey;
     
+    const APPLICATION_URL = 'https://api.greenhouse.io/v1/applications/';
+    
     public function setClient($apiClient)
     {
         $this->_apiClient = $apiClient;
     }
     
-    public function jobBoardBaseUrl($clientToken)
+    /**
+     * This is in a static method instead of a constant because it has a variable in it.
+     * If I wanted to be crafty I could assemble a constant with a variable here but
+     * since it's still in one place, who cares?
+     *
+     * @param   string  $clientToken    Your company's URL token.
+     * @return  string
+     */
+    public static function jobBoardBaseUrl($clientToken)
     {
         return "https://api.greenhouse.io/v1/boards/{$clientToken}/embed/";
     }
     
+    /**
+     * This wraps the above static method so you don't have to call it statically from
+     * within the package.
+     */
     public function getJobBoardBaseUrl()
     {
-        if empty($this->_clientToken) {
-            raise new GreenhouseServiceException('A client token must be defined to get the base URL.');
+        if (empty($this->_clientToken)) {
+            throw new GreenhouseServiceException('A client token must be defined to get the base URL.');
         }
         return self::jobBoardBaseUrl($this->_clientToken);
     }
     
+    /**
+     * Return whatever client we're using.  This should be something that implements the
+     * GreenhouseClientInterface
+     */
     public function getClient()
     {
         return $this->_apiClient;
+    }
+    
+    /**
+     * Base64 Encode an API key.  Greenhouse's encoding treats the key as the username with
+     * a blank password.  Here we append the : for convenience.  We also handle the case
+     * where the user appends the : themselves.  If no key is provided, we will attempt
+     * to encode the private api key property.
+     *
+     * @params  string  $apiKey     A greenhouse job board API key.
+     * @return  string  The other side of an Authorization header (Basic: <encoded key>)
+     */
+    public function getAuthorizationHeader($apiKey="")
+    {
+        if (empty($apiKey)) {
+            $apiKey = $this->_apiKey;
+        }
+        
+        if (empty($apiKey)) {
+            throw new GreenhouseServiceException('No key provided to encode.');
+        }
+        
+        if (substr($apiKey, -1) == ':') {
+            $key = $apiKey;
+        } else {
+            $key = $apiKey . ':';
+        }
+        
+        return 'Basic ' . base64_encode($key);
     }
 }
