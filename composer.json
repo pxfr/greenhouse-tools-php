@@ -6,9 +6,6 @@
     "homepage": "https://github.com/grnhse/greenhouse-tools-php",
     "authors": [
         {
-            "name": "Greenhouse"
-        },
-        {
             "name": "Tom Phillips",
             "email": "tphillips@greenhouse.io"
         }
