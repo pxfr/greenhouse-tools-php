@@ -5,3 +5,7 @@ php:
   - hhvm
   - nightly
 script: phpunit
+branches:
+    only:
+    - master
+sudo: false
