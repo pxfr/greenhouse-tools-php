@@ -4,7 +4,7 @@ php:
   - '7.0'
   - hhvm
 script: phpunit
-install: composer install
+before_install: composer install --dev
 branches:
     only:
     - master
