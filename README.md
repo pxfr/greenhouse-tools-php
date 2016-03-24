@@ -43,9 +43,8 @@ $service->embedGreenhouseJobBoard();
 
 ?>
 ```
-
-
 # The Job API Service
+Use this service
 
 # The Application Service
 
