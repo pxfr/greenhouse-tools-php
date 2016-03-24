@@ -75,7 +75,7 @@ class CurlClient implements ApiClientInterface
     
     /**
      * Greenhouse's POST format matches CURL.  However, it will reject any attempt to POST an array because
-     * libcurl has a bug that prevents submitting it correctly to Ruby applications.  For more details, see
+     * libcurl has a bug that prevents submitting it correctly to non-PHP applications.  For more details, see
      * the PHP bug here: https://bugs.php.net/bug.php?id=51634
      * This will check for multiselects, throw an exception if one exists, or just reflect the parameters.
      *
