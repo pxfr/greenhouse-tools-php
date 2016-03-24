@@ -72,4 +72,13 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
             'Some work</a>'
         );
     }
+    
+    public function testLinkToGreenhouseJobApplicationWithToken()
+    {
+        $this->assertEquals(
+            $this->jobBoardService->linkToGreenhouseJobApplication(12345, 'Some work', 'abcde'),
+            "<a href='http://boards.greenhouse.io/test_token/jobs/12345?gh_src=abcde'>" .
+            'Some work</a>'
+        );
+    }
 }

@@ -26,9 +26,7 @@ class JobBoardService
      */
     public function scriptTag()
     {
-        return "<script src='https://app.greenhouse.io/embed/job_board/js?for=" . 
-            $this->_clientToken . 
-            "'></script>";
+        return "<script src='https://app.greenhouse.io/embed/job_board/js?for={$this->_clientToken}'></script>";
     }
     
     /**
@@ -62,10 +60,10 @@ class JobBoardService
      * @param   int     $jobId      The Job ID you want to apply to.
      * @param   string  $linkText   What you want the job board link to say.
      */
-    public function linkToGreenhouseJobApplication($jobId, $linkText="Apply to this job")
+    public function linkToGreenhouseJobApplication($jobId, $linkText="Apply to this job", $sourceToken="")
     {
-        return "<a href='http://boards.greenhouse.io/" . 
-            $this->_clientToken . 
-            "/jobs/$jobId'>$linkText</a>";
+        $ghSrc = empty($sourceToken) ? '' : "?gh_src={$sourceToken}";
+        
+        return "<a href='http://boards.greenhouse.io/{$this->_clientToken}/jobs/{$jobId}{$ghSrc}'>{$linkText}</a>";
     }
 }
