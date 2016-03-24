@@ -27,8 +27,7 @@ class CurlClient implements ApiClientInterface
     }
     
     /**
-     * Fetch the URL. As this is guzzle, this can take a relative URL.  See the Guzzle
-     * docs more info.
+     * Fetch the URL. 
      *
      * @params  string  $url        A full URL to get.
      * @return  string  The Raw JSON response from Greenhouse
@@ -49,9 +48,11 @@ class CurlClient implements ApiClientInterface
      * @params  string  $url            This can be left blank.  Url is set in the constructor.
      * @return  string
      * @throws  GreenhouseAPIResponseException  for non-200 responses
+     * @throws  GreenhouseAPIClientException    if $postParameters contains an array(), indicating multiselect.
      */
     public function post(Array $postVars, Array $headers, $url)
     {
+        // Use this to check for multi-selects.
         $this->formatPostParameters($postVars);
         
         curl_setopt($this->_client, CURLOPT_URL, $url);
@@ -73,12 +74,14 @@ class CurlClient implements ApiClientInterface
     }
     
     /**
-     * Return a Guzzle post parameter array that can be entered in to the 'multipart'
-     * argument of a post request.  For details on this, see the Guzzle
-     * documentation here: http://docs.guzzlephp.org/en/latest/request-options.html#multipart
+     * Greenhouse's POST format matches CURL.  However, it will reject any attempt to POST an array because
+     * libcurl has a bug that prevents submitting it correctly to Ruby applications.  For more details, see
+     * the PHP bug here: https://bugs.php.net/bug.php?id=51634
+     * This will check for multiselects, throw an exception if one exists, or just reflect the parameters.
      *
      * @params  Array   $postParameters
      * @return  Array
+     * @throws  GreenhouseAPIClientException    if $postParameters contains an array(), indicating multiselect.
      */
     public function formatPostParameters(Array $postParameters=array())
     {
