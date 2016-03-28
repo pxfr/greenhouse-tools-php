@@ -79,11 +79,8 @@ class ApplicationService extends ApiService
     public function postApplication($postVars=array())
     {
         $this->validateRequiredFields($postVars);
-        
         $postParams = $this->_apiClient->formatPostParameters($postVars);
         $headers    = array('Authorization' => $this->_authorizationHeader);
-        
-        print_r($headers);
         
         $this->_apiClient->post($postParams, $headers);
  
@@ -109,7 +106,7 @@ class ApplicationService extends ApiService
             }
         }
         
-        if (sizeof($missingKeys)) {
+        if (!empty($missingKeys)) {
             throw new GreenhouseApplicationException('Submission missing required answers for: ' . implode(', ', $missingKeys));
         }
         

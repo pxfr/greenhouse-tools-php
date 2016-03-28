@@ -64,18 +64,10 @@ class ApiService
     public function getAuthorizationHeader($apiKey="")
     {
         if (empty($apiKey)) {
+            if (empty($this->_apiKey)) throw new GreenhouseServiceException('No key provided to encode.');
             $apiKey = $this->_apiKey;
         }
-        
-        if (empty($apiKey)) {
-            throw new GreenhouseServiceException('No key provided to encode.');
-        }
-        
-        if (substr($apiKey, -1) == ':') {
-            $key = $apiKey;
-        } else {
-            $key = $apiKey . ':';
-        }
+        $key = rtrim($apiKey, ':') . ':';
         
         return 'Basic ' . base64_encode($key);
     }
