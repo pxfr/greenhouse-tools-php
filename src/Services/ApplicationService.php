@@ -83,8 +83,6 @@ class ApplicationService extends ApiService
         $headers    = array('Authorization' => $this->_authorizationHeader);
         
         $this->_apiClient->post($postParams, $headers);
- 
-        return true;
     }
     
     /**
@@ -124,15 +122,8 @@ class ApplicationService extends ApiService
      */
     public function hasRequiredValue($postVars, $keys)
     {
-        // If there is only one key (most of the time) short-circuit the array.
-        if (sizeof($keys) == 1) {
-            return array_key_exists($keys[0], $postVars) && $postVars[$keys[0]] !== '';
-            
-        // This is the O(N) case.  Happens rarely.
-        } else {
-            foreach ($keys as $key) {
-                if (array_key_exists($key, $postVars) && $postVars[$key] !== '') return true;
-            }
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $postVars) && $postVars[$key] !== '') return true;
         }
 
         return false;

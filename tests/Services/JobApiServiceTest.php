@@ -13,12 +13,6 @@ class JobApiServiceTest extends \PHPUnit_Framework_TestCase
         $this->baseUrl = JobApiService::jobBoardBaseUrl('greenhouse');
     }
     
-    public function testConstructorRequiresToken()
-    {
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $service = new JobApiService();
-    }
-    
     public function testGetContentQueryTrue()
     {
         $this->assertEquals(

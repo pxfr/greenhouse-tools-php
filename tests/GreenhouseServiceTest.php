@@ -17,6 +17,24 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
         ));
     }
     
+    public function testConstructWithNoBoardToken()
+    {
+        $service = new GreenhouseService(array('apiKey' => 'test_key'));
+        $this->assertInstanceOf(
+            '\Greenhouse\GreenhouseToolsPhp\GreenhouseService',
+            $service
+        );
+    }
+    
+    public function testConstructWithNoApiKey()
+    {
+        $service = new GreenhouseService(array('boardToken' => 'test_token'));
+        $this->assertInstanceOf(
+            '\Greenhouse\GreenhouseToolsPhp\GreenhouseService',
+            $service
+        );
+    }
+    
     public function testGetJobBoardService()
     {
         $service = $this->greenhouseService->getJobBoardService();

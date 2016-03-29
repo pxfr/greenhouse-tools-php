@@ -21,11 +21,8 @@ class JobApiService extends ApiService
      *
      * @param   string  $clientToken    As above
      */
-    public function __construct($clientToken="")
+    public function __construct($clientToken)
     {
-        if (empty($clientToken)) {
-            throw new GreenhouseServiceException('JobApiService requires a job board token.');
-        }
         $this->_clientToken = $clientToken;
         $client = new GuzzleClient(array('base_uri' => self::jobBoardBaseUrl($clientToken)));
         $this->setClient($client);

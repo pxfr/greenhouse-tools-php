@@ -7,7 +7,7 @@ use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIClientExceptio
 use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException;
 
 /**
- * Client to wrap the Guzzle package.
+ * Client to wrap libcurl
  */
 class CurlClient implements ApiClientInterface
 {

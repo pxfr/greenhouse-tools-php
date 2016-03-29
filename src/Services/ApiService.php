@@ -12,6 +12,7 @@ class ApiService
     protected $_apiKey;
     
     const APPLICATION_URL = 'https://api.greenhouse.io/v1/applications/';
+    const API_V1_URL = 'https://api.greenhouse.io/v1/';
     
     public function setClient($apiClient)
     {
@@ -28,7 +29,7 @@ class ApiService
      */
     public static function jobBoardBaseUrl($clientToken)
     {
-        return "https://api.greenhouse.io/v1/boards/{$clientToken}/embed/";
+        return self::API_V1_URL . "boards/{$clientToken}/embed/";
     }
     
     /**
