@@ -41,7 +41,7 @@ class GuzzleClient implements ApiClientInterface
         try {
             $guzzleResponse = $this->_client->request('GET', $url);
         } catch (RequestException $e) {
-            throw new GreenhouseAPIResponseException($e->getMessage());
+            throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
         }
         
         /**
@@ -69,7 +69,7 @@ class GuzzleClient implements ApiClientInterface
                 array('multipart' => $postVars, 'headers' => $headers)
             );
         } catch (RequestException $e) {
-            throw new GreenhouseAPIResponseException($e->getMessage());
+            throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
         }
         
         return (string) $guzzleResponse->getBody();
