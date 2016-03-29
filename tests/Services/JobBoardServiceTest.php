@@ -43,7 +43,7 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $this->jobBoardService->linkToGreenhouseJobBoard(),
-            "<a href='http://boards.greenhouse.io/test_token'>Open Positions</a>"
+            "<a href='https://boards.greenhouse.io/test_token'>Open Positions</a>"
         );
     }
     
@@ -51,7 +51,7 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $this->jobBoardService->linkToGreenhouseJobBoard('Link to jobs!'),
-            "<a href='http://boards.greenhouse.io/test_token'>Link to jobs!</a>"
+            "<a href='https://boards.greenhouse.io/test_token'>Link to jobs!</a>"
         );
     }
     
@@ -59,7 +59,7 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $this->jobBoardService->linkToGreenhouseJobApplication(12345),
-            "<a href='http://boards.greenhouse.io/test_token/jobs/12345'>" .
+            "<a href='https://boards.greenhouse.io/test_token/jobs/12345'>" .
             'Apply to this job</a>'
         );
     }
@@ -68,7 +68,7 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $this->jobBoardService->linkToGreenhouseJobApplication(12345, 'Some work'),
-            "<a href='http://boards.greenhouse.io/test_token/jobs/12345'>" .
+            "<a href='https://boards.greenhouse.io/test_token/jobs/12345'>" .
             'Some work</a>'
         );
     }
@@ -77,7 +77,7 @@ class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             $this->jobBoardService->linkToGreenhouseJobApplication(12345, 'Some work', 'abcde'),
-            "<a href='http://boards.greenhouse.io/test_token/jobs/12345?gh_src=abcde'>" .
+            "<a href='https://boards.greenhouse.io/test_token/jobs/12345?gh_src=abcde'>" .
             'Some work</a>'
         );
     }

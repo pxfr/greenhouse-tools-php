@@ -4,6 +4,8 @@ namespace Greenhouse\GreenhouseToolsPhp\Services;
 
 class JobBoardService
 {
+    const BOARDS_URL = 'https://boards.greenhouse.io/';
+    
     public function __construct($clientToken)
     {
         $this->_clientToken = $clientToken;
@@ -50,7 +52,7 @@ class JobBoardService
      */
     public function linkToGreenhouseJobBoard($linkText="Open Positions")
     {
-        return "<a href='http://boards.greenhouse.io/{$this->_clientToken}'>$linkText</a>";
+        return "<a href='" . self::BOARDS_URL . "{$this->_clientToken}'>$linkText</a>";
     }
     
     /**
@@ -64,6 +66,6 @@ class JobBoardService
     {
         $ghSrc = empty($sourceToken) ? '' : "?gh_src={$sourceToken}";
         
-        return "<a href='http://boards.greenhouse.io/{$this->_clientToken}/jobs/{$jobId}{$ghSrc}'>{$linkText}</a>";
+        return "<a href='" . self::BOARDS_URL . "{$this->_clientToken}/jobs/{$jobId}{$ghSrc}'>{$linkText}</a>";
     }
 }
