@@ -6,6 +6,9 @@ This package of tools is provided by Greenhouse for customers who use PHP.  Ther
 2. **Job API Service**: Used to fetch data from the Greenhouse Job Board API.
 3. **Application Service**: Used to send applications in to Greenhouse.
 
+# Requirements
+1. PHP Version 5.6 or greater. (Travis build passes on PHP 7.0; has not been manually tested).
+
 # Greenhouse Service
 The Greenhouse Service is a parent service that returns the other Greenhouse Services.  By using this service, you have access to all the other services.  The Greenhouse service takes an array that optionally includes your job board URL Token [(found here in Greenhouse)](https://app.greenhouse.io/configure/dev_center/config/) and your Job Board API Credentials [(found here in Greenhouse)] (https://app.greenhouse.io/configure/dev_center/credentials).  Create a Greenhouse Service object like this:
 
