@@ -95,12 +95,11 @@ $postParams = array('
 	'first_name' => 'Johnny',
 	'last_name' => 'Test',
 	'email' => 'jt@example.com',
-	'resume' => new \CurlFile('path/to/file.pdf', 'application/pdf', 'resume.pdf'),j
+	'resume' => new \CURLFile('path/to/file.pdf', 'application/pdf', 'resume.pdf'),
 	'question_12345' => 'The answer you seek',
 	'question_123456' => array(12345, 23456, 34567)
 );
-$params = $appService->formatPostParameter($postParams);
-$appService->postApplication($params);
+$appService->postApplication($postParams);
 
 ?>
 ```
