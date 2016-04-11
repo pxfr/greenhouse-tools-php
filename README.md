@@ -41,16 +41,16 @@ This service generates the appropriate HTML tags for use with the Greenhouse ifr
 ```
 <?php
 
-$greenhouseService->getJobBoardService();
+$jobBoardService = $greenhouseService->getJobBoardService();
 
 // Link to a Greenhouse hosted job board
-$greenhouseService->linkToGreenhouseJobBoard();
+$jobBoardService->linkToGreenhouseJobBoard();
 
 // Link to a Greenhouse hosted job application
-$greenhouseService->linkToGreenhouseJobApplication(12345, 'Apply to this job!', 'source_token');
+$jobBoardService->linkToGreenhouseJobApplication(12345, 'Apply to this job!', 'source_token');
 
 // Embed a Greenhouse iframe in your page
-$greenhouseService->embedGreenhouseJobBoard();
+$jobBoardService->embedGreenhouseJobBoard();
 
 ?>
 ```
@@ -58,31 +58,31 @@ $greenhouseService->embedGreenhouseJobBoard();
 Use this service to fetch public job board information from our job board API.  This services does not require an API key.  This is used to interact with the GET endpoints in the Greenhouse Job Board API.  These methods can be [found here](https://developers.greenhouse.io/job-board.html).  Access this service via:
 
 ```
-$greenhouseService->getJobApiService();
+$jobApiService = $greenhouseService->getJobApiService();
 ```
 
 The methods in this service are named in relation to the endpoints, so to use the GET Offices endpoint, you'd call:
 
 ```
-$greenhouseService->getOffices();
+$jobApiService->getOffices();
 ```
 
 And to get a specific office:
 
 ```
-$greenhouseService->getOffice($officeId);
+$jobApiService->getOffice($officeId);
 ```
 
 The only additional parameters used in any case are for the "content" and "questions" parameters in the Jobs endpoint.  These are managed with boolean arguments that default to `false` in the `getJobs` and `getJob` methods.  To get all jobs with their content included, you'd call:
 
 ```
-$service->getJobs(true);
+$jobApiService->getJobs(true);
 ```
 
 while to get a job with its questions included, you'd call:
 
 ```
-$service->getJob($jobId, true);
+$jobApiService->getJob($jobId, true);
 ```
 # The Application Service
 Use this service to post Applications in to Greenhouse.  Use of this Service requires a Job Board API key which can be generated in Greenhouse.  Example usage of this service follows:
