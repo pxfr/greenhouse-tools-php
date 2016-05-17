@@ -76,7 +76,7 @@ class ApplicationService extends ApiService
      * @throws  GreenhouseApplicationException  if required fields are not included.
      * @throws  GreenhouseAPIResponseException  if a non-200 response is returned.
      */
-    public function postApplication($postVars=array())
+    public function postApplication(Array $postVars=array())
     {
         $this->validateRequiredFields($postVars);
         $postParams = $this->_apiClient->formatPostParameters($postVars);
