@@ -8,6 +8,7 @@ This package of tools is provided by Greenhouse for customers who use PHP.  Ther
 
 # Requirements
 1. PHP Version 5.6 or greater. (Travis build passes on PHP 7.0; has not been manually tested).
+2. [Composer](https://getcomposer.org/).  You should be using Composer to manage this package. 
 
 # Installing
 This is available on Packagist.  Install via Composer.  Add the following to your requirements:
