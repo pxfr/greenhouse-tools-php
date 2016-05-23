@@ -92,7 +92,8 @@ Use this service to post Applications in to Greenhouse.  Use of this Service req
 <?php
 
 $appService = $greenhouseService->getApplicationApiService();
-$postParams = array('
+$postParams = array(
+	'id' => 82354,
 	'first_name' => 'Johnny',
 	'last_name' => 'Test',
 	'email' => 'jt@example.com',
