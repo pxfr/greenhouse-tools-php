@@ -17,7 +17,6 @@ use Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseApplicationExcep
  */
 class ApplicationService extends ApiService
 {
-    private $_authorizationHeader;
     private $_jobApiService;
     
     /**

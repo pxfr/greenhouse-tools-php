@@ -2,7 +2,6 @@
 
 namespace Greenhouse\GreenhouseToolsPhp\Services;
 
-use Greenhouse\GreenhouseToolsPhp\Services\ApiService;
 use Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException;
 
 class ApiService
@@ -10,9 +9,11 @@ class ApiService
     protected $_apiClient;
     protected $_clientToken;
     protected $_apiKey;
+    protected $_authorizationHeader;
     
     const APPLICATION_URL = 'https://api.greenhouse.io/v1/applications/';
     const API_V1_URL = 'https://api.greenhouse.io/v1/';
+    const HARVEST_V1_URL = 'https://harvest.greenhouse.io/v1/';
     
     public function setClient($apiClient)
     {
