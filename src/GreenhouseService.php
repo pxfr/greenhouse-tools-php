@@ -50,4 +50,9 @@ class GreenhouseService
     {
         return new \Greenhouse\GreenhouseToolsPhp\Services\JobBoardService($this->_boardToken);
     }
+    
+    public function getHarvestService()
+    {
+        return new \Greenhouse\GreenhouseToolsPhp\Services\HarvestService($this->_apiKey);
+    }
 }

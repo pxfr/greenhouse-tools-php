@@ -74,4 +74,15 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($baseUrl, $service->getJobBoardBaseUrl());
         $this->assertEquals($authHeader, $service->getAuthorizationHeader());
     }
+    
+    public function testGetHarvestService()
+    {
+        $service = $this->greenhouseService->getHarvestService();
+        $this->assertInstanceOf(
+            '\Greenhouse\GreenhouseToolsPhp\Services\HarvestService',
+            $service
+        );
+        $authHeader = 'Basic ' . base64_encode($this->apiKey . ':');
+        $this->assertEquals($authHeader, $service->getAuthorizationHeader());
+    }
 }
