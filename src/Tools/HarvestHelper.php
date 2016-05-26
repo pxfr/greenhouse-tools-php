@@ -61,7 +61,7 @@ class HarvestHelper
         return $url;
     }
 
-    public function getRequestPathAndParameters($url, $parameters=array())
+    public function addQueryString($url, $parameters=array())
     {
         $params = array();
         foreach ($parameters as $key => $value) $params[] = "$key=$value";

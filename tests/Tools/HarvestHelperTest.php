@@ -117,15 +117,15 @@ class HarvestHelperTest extends \PHPUnit_Framework_TestCase
         $this->parser->parse('testCandidates', array());
     }
     
-    public function testGetRequestPathAndParameters()
+    public function testAddQueryString()
     {
         $expected = 'candidate/12345/person?per_page=10&page=2';
-        $this->assertEquals($expected, $this->parser->getRequestPathAndParameters('candidate/12345/person', $this->parameters));
+        $this->assertEquals($expected, $this->parser->addQueryString('candidate/12345/person', $this->parameters));
     }
     
-    public function testGetRequestPathAndParamsWithNoParams()
+    public function testAddQueryStringWithNoParameters()
     {
         $expected = 'candidate/12345/person';
-        $this->assertEquals($expected, $this->parser->getRequestPathAndParameters('candidate/12345/person'));
+        $this->assertEquals($expected, $this->parser->addQueryString('candidate/12345/person'));
     }
 }
