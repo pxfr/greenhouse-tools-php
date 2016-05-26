@@ -40,4 +40,11 @@ interface ApiClientInterface
      * @return  mixed   Whatever method of sending POST that $this->post understands
      */
     public function formatPostParameters(Array $postParameters);
+    
+    /**
+     * Send is a catch-all method that allows you to use a magic method to catch any type of request
+     * and forward it on.  This is based on the Guzzle send method, but can be altered to fit any other
+     * future client.
+     */
+    public function send($method, $url, Array $options);
 }
