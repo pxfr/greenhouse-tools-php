@@ -132,17 +132,8 @@ $harvestService = $greenhouseService->getHarvestService();
 Via the Harvest service, you can interact with any Harvest methods outlined in the Greenhouse Harvest docs.  Harvest URLs fit mostly in to one of the following three formats:
 
 1. `https://harvest.greenhouse.io/v1/<object>`: This is the most common URL format for GET methods in Greenhouse.  For endpoints in this format, the method will look like `$harvestService->getObject()`.  Examples of this are `$harvestService->getJobs()` or `$harvestService->getCandidates()`
-2. `https://harvest.greenhouse.io/v1/<object>/<object_id>`: This will get the object with the given ID.  This is expected to only return or operate on one object.  The ID will always be supplied by an parameter array with a key named 'id'.  For instance:
-```
-$parameters = array('id' => 12345);
-
-// Return the Candidate with the ID 12345
-$harvestService->getCandidate($parameters);
-
-// Patch the Candidate with the ID 12345
-$harvestService->patchCandidate($parameters);
-```
-3. `https://harvest.greenhouse.io/v1/<object>/<object_id>/<sub_object>`: Urls in this format usually mean that you want to get all the sub_objects for the object with the object id.  For instance, all the job stages for the given job.  Examples of this are `$harvestService->getJobStagesForJob(array('id' => 123))` and `$harvestService->getOffersForApplication(array('id' => 123))`
+2. `https://harvest.greenhouse.io/v1/<object>/<object_id>`: This will get the object with the given ID.  This is expected to only return or operate on one object.  The ID will always be supplied by an parameter array with a key named `id`.  For instance: `$harvestService->getCandidate($parameters);`
+3. `https://harvest.greenhouse.io/v1/<object>/<object_id>/<sub_object>`: URLs in this format usually mean that you want to get all the sub_objects for the object with the object id.  Examples of this are `$harvestService->getJobStagesForJob(array('id' => 123))` and `$harvestService->getOffersForApplication(array('id' => 123))`
 4. Some method calls and URLs do not exactly fit this format, but the methods were named as close to fitting that format as possible.  These include:
   * `getActivityFeedForCandidate`: [Get a candidate's activity feed](https://developers.greenhouse.io/harvest.html#retrieve-activity-feed-for-candidate)
   * `postNoteForCandidate`: [Add a note to a candidate](https://developers.greenhouse.io/harvest.html#create-a-candidate-39-s-note)
@@ -159,13 +150,13 @@ Ex: [Moving an application](https://developers.greenhouse.io/harvest.html#move-a
 ```
 $parameters = array(
     'id' => $applicationId,
-    'headers' => array('On-Behalf-Of' => $myUserId),
+    'headers' => array('On-Behalf-Of' => $auditUserId),
     'body' => '{"from_stage_id": 123, "to_stage_id": 234}'
 );
 $harvestService->moveApplication($parameters);
 ```
 
-Note you do not have to supply the authorization array.  This will be appended to the headers array automatically presuming the supplied API key was correct.
+Note you do not have to supply the authorization header in the `headers` array.  This will be appended to the headers array automatically presuming the supplied API key is valid.
 
 The parameters array is also used to supply any paging and filtering options that would normally be supplied as a GET query string.  Anything that is not in the `id`, `headers`, or `body` key will be assumed to be a URL parameter.  
 
@@ -180,7 +171,7 @@ $harvestService->getApplications($parameters);
 
 If the ID key is supplied in any way, that will take precedence.
 
-**A note on future development**: The Harvest package makes use of magic `__call` method.  This was to handle the case where Greenhouse's Harvest API advances past this package.  Any new methods that are added with endpoints that look similar should just work.  If Greenhouse, for instaces, adds a GET `https://harvest.greenhouse.io/v1/widget endpoint`, calling `$harvestService->getWidget()` should be automatically supported by this package.
+**A note on future development**: The Harvest package makes uses PHP's magic `__call` method.  This was to handle the case where Greenhouse's Harvest API advances past this package.  New endpoint URLs should automatically work if they're added in the same format.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be automatically supported by this package.
 
 
 # Exceptions
