@@ -63,10 +63,8 @@ class HarvestHelper
 
     public function addQueryString($url, $parameters=array())
     {
-        $params = array();
-        foreach ($parameters as $key => $value) $params[] = "$key=$value";
-        if (sizeof($params)) {
-            return $url . '?' . implode('&', $params);
+        if (sizeof($parameters)) {
+            return $url . '?' . http_build_query($parameters);
         } else {
             return $url;
         }
@@ -74,7 +72,7 @@ class HarvestHelper
     
     private function _decamelizeAndPluralize($string)
     {
-        $decamelized = strtolower(preg_replace(['/([a-z\d])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
+        $decamelized = strtolower(preg_replace(['/([a-z0-9])([A-Z])/', '/([^_])([A-Z][a-z])/'], '$1_$2', $string));
         if (substr($decamelized, -1) != 's') $decamelized .= 's';
         
         return $decamelized;
