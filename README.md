@@ -167,6 +167,7 @@ $parameters = array(
     'page' => 2
 );
 $harvestService->getApplications($parameters);
+// Will call https://harvest.greenhouse.io/v1/applications?per_page=100&page=2
 ```
 
 If the ID key is supplied in any way, that will take precedence.
