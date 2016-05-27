@@ -75,6 +75,17 @@ class GuzzleClient implements ApiClientInterface
         return (string) $guzzleResponse->getBody();
     }
     
+    public function send($method, $url, Array $options=array())
+    {
+        try {
+            $guzzleResponse = $this->_client->request($method, $url, $options);
+        } catch (RequestException $e) {
+            throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
+        }
+        
+        return (string) $guzzleResponse->getBody();
+    }
+    
     /**
      * Return a Guzzle post parameter array that can be entered in to the 'multipart'
      * argument of a post request.  For details on this, see the Guzzle
