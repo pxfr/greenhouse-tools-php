@@ -172,7 +172,7 @@ $harvestService->getApplications($parameters);
 
 If the ID key is supplied in any way, that will take precedence.
 
-**A note on future development**: The Harvest package makes uses PHP's magic `__call` method.  This was to handle the case where Greenhouse's Harvest API advances past this package.  New endpoint URLs should automatically work if they're added in the same format.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be automatically supported by this package.
+**A note on future development**: The Harvest package makes use PHP's magic `__call` method.  This is to handle Greenhouse's Harvest API advancing past this package.  New endpoint URLs should work automatically.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be supported by this package.
 
 
 # Exceptions
