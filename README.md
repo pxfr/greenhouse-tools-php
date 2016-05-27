@@ -121,5 +121,67 @@ The Greenhouse packages requires you to do it like this:
 
 This prevents issues that arise for systems that do not understand the array-indexed nomenclature preferred by Libcurl.
 
+# The Harvest Service
+Use this service to interact with the Harvest API in Greenhouse.  Documentation for the Harvest API [can be found here.](https://developers.greenhouse.io/harvest.html/)  The purpose of this service is to make interactions with the Harvest API easier.  To create a Harvest Service object, you must supply an active Harvest API key.  Note that these are different than Job Board API keys.
+```
+<?php
+$harvestService = $greenhouseService->getHarvestService();
+?>
+```
+
+Via the Harvest service, you can interact with any Harvest methods outlined in the Greenhouse Harvest docs.  Harvest URLs fit mostly in to one of the following three formats:
+
+1. `https://harvest.greenhouse.io/v1/<object>`: This is the most common URL format for GET methods in Greenhouse.  For endpoints in this format, the method will look like `$harvestService->getObject()`.  Examples of this are `$harvestService->getJobs()` or `$harvestService->getCandidates()`
+2. `https://harvest.greenhouse.io/v1/<object>/<object_id>`: This will get the object with the given ID.  This is expected to only return or operate on one object.  The ID will always be supplied by an parameter array with a key named 'id'.  For instance:
+```
+$parameters = array('id' => 12345);
+
+// Return the Candidate with the ID 12345
+$harvestService->getCandidate($parameters);
+
+// Patch the Candidate with the ID 12345
+$harvestService->patchCandidate($parameters);
+```
+3. `https://harvest.greenhouse.io/v1/<object>/<object_id>/<sub_object>`: Urls in this format usually mean that you want to get all the sub_objects for the object with the object id.  For instance, all the job stages for the given job.  Examples of this are `$harvestService->getJobStagesForJob(array('id' => 123))` and `$harvestService->getOffersForApplication(array('id' => 123))`
+4. Some method calls and URLs do not exactly fit this format, but the methods were named as close to fitting that format as possible.  These include:
+  * `getActivityFeedForCandidate`: [Get a candidate's activity feed](https://developers.greenhouse.io/harvest.html#retrieve-activity-feed-for-candidate)
+  * `postNoteForCandidate`: [Add a note to a candidate](https://developers.greenhouse.io/harvest.html#create-a-candidate-39-s-note)
+  * `putAnonymizeCandidate`: [Anonymize some fields on a candidate](https://developers.greenhouse.io/harvest.html#anonymize-a-candidate)
+  * `getCurrentOfferForApplication`: [Get only the current offer for a candidate](https://developers.greenhouse.io/harvest.html#retrieve-current-offer-for-application)
+  * `postAdvanceApplication`: [Advance an application to the next stage](https://developers.greenhouse.io/harvest.html#advance-an-application)
+  * `postMoveApplication`: [Move an application to any stage.](https://developers.greenhouse.io/harvest.html#move-an-application)
+  * `postRejectApplication`: [Reject an application](https://developers.greenhouse.io/harvest.html#reject-an-application)
+
+You should use the parameters array to supply any URL parameters and headers required by the harvest methods.  For any items that require a JSON body, this will also be supplied in the parameter array.  
+
+
+Ex: [Moving an application](https://developers.greenhouse.io/harvest.html#move-an-application)
+```
+$parameters = array(
+    'id' => $applicationId,
+    'headers' => array('On-Behalf-Of' => $myUserId),
+    'body' => '{"from_stage_id": 123, "to_stage_id": 234}'
+);
+$harvestService->moveApplication($parameters);
+```
+
+Note you do not have to supply the authorization array.  This will be appended to the headers array automatically presuming the supplied API key was correct.
+
+The parameters array is also used to supply any paging and filtering options that would normally be supplied as a GET query string.  Anything that is not in the `id`, `headers`, or `body` key will be assumed to be a URL parameter.  
+
+Ex: [Getting a page of applications](https://developers.greenhouse.io/harvest.html#list-applications)
+```
+$parameters = array(
+    'per_page' => 100,
+    'page' => 2
+);
+$harvestService->getApplications($parameters);
+```
+
+If the ID key is supplied in any way, that will take precedence.
+
+**A note on future development**: The Harvest package makes use of magic `__call` method.  This was to handle the case where Greenhouse's Harvest API advances past this package.  Any new methods that are added with endpoints that look similar should just work.  If Greenhouse, for instaces, adds a GET `https://harvest.greenhouse.io/v1/widget endpoint`, calling `$harvestService->getWidget()` should be automatically supported by this package.
+
+
 # Exceptions
 All exceptions raised by the Greenhouse Service library extend from `GreenhouseException`.  Catch this exception to catch anything thrown from this library.
