@@ -5,6 +5,7 @@ This package of tools is provided by Greenhouse for customers who use PHP.  Ther
 1. **Job Board Service**: Used to embed iframes in your template or view files.  
 2. **Job API Service**: Used to fetch data from the Greenhouse Job Board API.
 3. **Application Service**: Used to send applications in to Greenhouse.
+4. **Harvest Service**: Used to interact with the Harvest API.
 
 # Requirements
 1. PHP Version 5.6 or greater. (Travis build passes on PHP 7.0; has not been manually tested).
