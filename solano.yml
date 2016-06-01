@@ -1,0 +1,12 @@
+php:
+  version: '5.6.0'
+hooks:
+  pre_setup: composer install
+tests:
+  - ./vendor/bin/phpunit
+cache:
+  key_paths:
+    - composer.json
+    - composer.lock
+  save_paths:
+    - vendor
