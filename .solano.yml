@@ -1,27 +1,15 @@
-
-# Solano CI configuration
-
 php:
   version: 
     - '5.5.16'
     - '5.6'
     - '7.0'
-
 hooks:
-  pre_setup: composer.phar install
-
-# Cache vendor directory for faster builds
+  pre_setup: composer install
+tests:
+  - ./vendor/bin/phpunit
 cache:
   key_paths:
     - composer.json
     - composer.lock
   save_paths:
     - vendor
-
-tests:
-  - type: phpunit
-    mode: parallel
-    output: exit-status
-    command: vendor/bin/solano-phpunit
-    files:
-      - tests/**Test.php
