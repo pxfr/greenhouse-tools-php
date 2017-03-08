@@ -81,7 +81,7 @@ class ApplicationService extends ApiService
         $postParams = $this->_apiClient->formatPostParameters($postVars);
         $headers    = array('Authorization' => $this->_authorizationHeader);
         
-        $this->_apiClient->post($postParams, $headers);
+        return $this->_apiClient->post($postParams, $headers);
     }
     
     /**
