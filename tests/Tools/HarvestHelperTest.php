@@ -29,6 +29,19 @@ class HarvestHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->parser->parse('getApplications', $this->parameters));
     }
     
+    public function testParsePostSingleWordMethodNoId()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'candidates',
+            'parameters' => $this->parameters,
+            'headers' => array(),
+            'body' => null
+        );
+        $this->assertEquals($expected, $this->parser->parse('postCandidate', $this->parameters));
+    
+    }
+    
     public function testParseGetSingleWordMethodWithId()
     {
         $expected = array(
