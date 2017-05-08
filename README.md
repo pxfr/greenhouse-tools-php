@@ -207,10 +207,23 @@ $parameters = array(
 $harvest->postCandidate($parameters);
 ```
 
-All Greenhouse Harvest methods that use Post will follow this convention.  In short, the JSON body as described in the documentation should be provided in `body` parameter passed to postCandidate which will be sent to the Guzzle client.
+All Greenhouse Harvest methods that use Post will follow this convention.  In short, the JSON body as described in Greenhouse's provided documentation should be sent in the `body` parameter.
 
 **A note on future development**: The Harvest package makes use PHP's magic `__call` method.  This is to handle Greenhouse's Harvest API advancing past this package.  New endpoint URLs should work automatically.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be supported by this package.
 
+Ex: [Deleting an application](https://developers.greenhouse.io/harvest.html#delete-delete-application)
+
+Greenhouse also now supports DELETE methods via the API service, which requires the `id` of the object being deleted and the id of the user on whose behalf we are deleting the object.
+```
+// DELETE an application
+$parameters = array(
+    'id' => $applicationId,
+    'headers' => array('On-Behalf-Of' => $auditUserId)
+);
+$harvestService->deleteApplication($parameters);
+```
+
+All Greenhouse deletion events via Harvest will follow this convention.
 
 # Exceptions
 All exceptions raised by the Greenhouse Service library extend from `GreenhouseException`.  Catch this exception to catch anything thrown from this library.
