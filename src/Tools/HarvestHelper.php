@@ -13,7 +13,7 @@ class HarvestHelper
     public function parse($methodName, $parameters=array())
     {
         $return = array();
-        $pattern = '/^(get|post|patch|put)(\w+)$/i';
+        $pattern = '/^(get|post|patch|put|delete)(\w+)$/i';
         $matched = preg_match($pattern, $methodName, $matches);
         
         if (!$matched) throw new GreenhouseServiceException("Harvest Service: invalid method $methodName.");

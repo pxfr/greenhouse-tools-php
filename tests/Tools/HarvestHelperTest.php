@@ -29,6 +29,19 @@ class HarvestHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->parser->parse('getApplications', $this->parameters));
     }
     
+    public function testParsePostSingleWordMethodNoId()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'candidates',
+            'parameters' => $this->parameters,
+            'headers' => array(),
+            'body' => null
+        );
+        $this->assertEquals($expected, $this->parser->parse('postCandidate', $this->parameters));
+    
+    }
+    
     public function testParseGetSingleWordMethodWithId()
     {
         $expected = array(
@@ -64,6 +77,18 @@ class HarvestHelperTest extends \PHPUnit_Framework_TestCase
             'body' => null
         );
         $this->assertEquals($expected, $this->parser->parse('getEmailTemplates', array('id' => 12345)));
+    }
+    
+    public function testParseWithDeleteMethod()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'applications/12345',
+            'parameters' => array(),
+            'headers' => array(),
+            'body' => null
+        );
+        $this->assertEquals($expected, $this->parser->parse('deleteApplication', array('id' => 12345)));
     }
     
     public function testParseGetSingleWordMethodWithForWithId()

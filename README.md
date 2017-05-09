@@ -173,8 +173,57 @@ $harvestService->getApplications($parameters);
 
 If the ID key is supplied in any way, that will take precedence.
 
+Ex: [Adding a candidate to Greenhouse](https://developers.greenhouse.io/harvest.html#post-add-candidate)
+
+Greenhouse includes several methods in Harvest to POST new objects.  It should be noted that the creation of candidates and applications in Harvest differs from the Application service above.  Documents via Harvest can only be received via binary content or by including a URL which contains the document.  As such, the Harvest service uses the `body` parameter in Guzzle instead of including POST parameters.
+```
+$candidate = array(
+    'first_name' => 'John',
+    'last_name' => 'Doe',
+    'phone_numbers' => array(
+        array('value' => '310-555-2345', 'type' => 'other')
+    ),
+    'email_addresses' => array(
+        array('value' => 'john.doe@example.com', 'type' => 'personal')
+    ),
+    'applications' => array(
+        array(
+            'job_id' => 146855,
+            'attachments' => array(
+                array(
+                    'filename' => 'resume.pdf',
+                    'type' => 'resume',
+                    'url' => 'http://example.com/resume.pdf',
+                    'content_type' => 'application/pdf'
+                )
+            )
+        )
+    )
+);
+$parameters = array(
+    'headers' => array('On-Behalf-Of' => 12345),
+    'body' => json_encode($candidate)
+)
+$harvest->postCandidate($parameters);
+```
+
+All Greenhouse Harvest methods that use Post will follow this convention.  In short, the JSON body as described in Greenhouse's provided documentation should be sent in the `body` parameter.
+
 **A note on future development**: The Harvest package makes use PHP's magic `__call` method.  This is to handle Greenhouse's Harvest API advancing past this package.  New endpoint URLs should work automatically.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be supported by this package.
 
+Ex: [Deleting an application](https://developers.greenhouse.io/harvest.html#delete-delete-application)
+
+Greenhouse also now supports DELETE methods via the API service, which requires the `id` of the object being deleted and the id of the user on whose behalf we are deleting the object.
+```
+// DELETE an application
+$parameters = array(
+    'id' => $applicationId,
+    'headers' => array('On-Behalf-Of' => $auditUserId)
+);
+$harvestService->deleteApplication($parameters);
+```
+
+All Greenhouse deletion events via Harvest will follow this convention.
 
 # Exceptions
 All exceptions raised by the Greenhouse Service library extend from `GreenhouseException`.  Catch this exception to catch anything thrown from this library.

@@ -245,6 +245,25 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testPostCandidate()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'candidates',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+        );
+        
+        $this->harvestService->postCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
     public function testPostAttachment()
     {
         $expected = array(
@@ -620,8 +639,27 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
             'parameters' => array()
         );
         $params = array();
-            
+
         $this->harvestService->getOffices($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testDeleteApplication()
+    {
+       $expected = array(
+            'method' => 'delete',
+            'url' => 'applications/12345',
+            'headers' => array('On-Behalf-Of' => 23456),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array(
+            'id' => 12345,
+            'headers' => array('On-Behalf-Of' => 23456)
+        );
+        
+        $this->harvestService->deleteApplication($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
