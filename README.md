@@ -150,8 +150,8 @@ Via the Harvest service, you can interact with any Harvest methods outlined in t
   * `postMergeCandidates`: [Merge a duplicate candidate to a primary candidate.](https://developers.greenhouse.io/harvest.html#put-merge-candidates)
   * `getCandidateTags`: [Returns all candidate tags in your organization.](https://developers.greenhouse.io/harvest.html#get-list-candidate-tags)
   * `getTagsForCandidate`: [Returns all tags applied to a single candidate.](https://developers.greenhouse.io/harvest.html#get-list-tags-applied-to-candidate)
-  * `getCustomFields`: [Returns all custom fields](): Note for this method, the id argument will contain the type of custom field you want to retrieve.  `$harvestService->getCustomFields('id' => 'job');` will return all the job custom fields in your organization. Leaving this argument blank will return all custom fields.
-  * `getTrackingLinks`: [Return a specific traking link for the supplied token.](https://developers.greenhouse.io/harvest.html#get-tracking-link-data-for-token): Note for this link, the token will be provided in the 'id' argument.  `$harvestService->getTrackingLink('id' => <token>);`
+  * `getCustomFields`: [Returns all custom fields](): Note for this method, the id argument will contain the type of custom field you want to retrieve.  `$harvestService->getCustomFields(array('id' => 'job'));` will return all the job custom fields in your organization. Leaving this argument blank will return all custom fields.
+  * `getTrackingLinks`: [Return a specific traking link for the supplied token.](https://developers.greenhouse.io/harvest.html#get-tracking-link-data-for-token): Note for this link, the token will be provided in the 'id' argument.  `$harvestService->getTrackingLink(array('id' => '<token>'));`
   * `patchEnableUser`: [Enable a disabled user from accessing Greenhouse.](https://developers.greenhouse.io/harvest.html#patch-enable-user)
   * `patchDisableUser`: [Disable a user from accessing Greenhouse.](https://developers.greenhouse.io/harvest.html#patch-disable-user)
 
@@ -219,7 +219,7 @@ $harvest->postCandidate($parameters);
 
 All Greenhouse Harvest methods that use Post will follow this convention.  In short, the JSON body as described in Greenhouse's provided documentation should be sent in the `body` parameter.
 
-**A note on custom fields**: The custom fields section of Harvest reacts a bit differently in that `getCustomFields` reacts differently than `getCustomField`.  In this case, `getCustomFields` takes a text id to limit the response to just the custom fields for a specific set of objects.  For example, you'd use `id => 'job'` to return only custom fields for a job.  While `getCustomField` takes a normal numeric to retrieve a single custom field.
+**A note on custom fields**: `getCustomFields` and `getCustomField` are different than the rest of the Harvest service.  `getCustomFields` takes a text id to limit the response to just the custom fields for a specific set of objects.  For example, you'd use `id => 'job'` to return only custom fields for a job.  While `getCustomField` takes a normal numeric id to retrieve a single custom field.
 
 **A note on future development**: The Harvest package makes use PHP's magic `__call` method.  This is to handle Greenhouse's Harvest API advancing past this package.  New endpoint URLs should work automatically.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be supported by this package.
 
