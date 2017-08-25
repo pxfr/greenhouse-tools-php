@@ -130,22 +130,32 @@ $harvestService = $greenhouseService->getHarvestService();
 ?>
 ```
 
-Via the Harvest service, you can interact with any Harvest methods outlined in the Greenhouse Harvest docs.  Harvest URLs fit mostly in to one of the following three formats:
+Via the Harvest service, you can interact with any Harvest methods outlined in the Greenhouse Harvest docs.  Harvest URLs fit mostly in to one of the following five formats:
 
 1. `https://harvest.greenhouse.io/v1/<object>`: This is the most common URL format for GET methods in Greenhouse.  For endpoints in this format, the method will look like `$harvestService->getObject()`.  Examples of this are `$harvestService->getJobs()` or `$harvestService->getCandidates()`
 2. `https://harvest.greenhouse.io/v1/<object>/<object_id>`: This will get the object with the given ID.  This is expected to only return or operate on one object.  The ID will always be supplied by an parameter array with a key named `id`.  For instance: `$harvestService->getCandidate($parameters);`
 3. `https://harvest.greenhouse.io/v1/<object>/<object_id>/<sub_object>`: URLs in this format usually mean that you want to get all the sub_objects for the object with the object id.  Examples of this are `$harvestService->getJobStagesForJob(array('id' => 123))` and `$harvestService->getOffersForApplication(array('id' => 123))`
-4. Some method calls and URLs do not exactly fit this format, but the methods were named as close to fitting that format as possible.  These include:
+4. `https://harvest.greenhouse.io/v1/<object>/<object_id>/<sub_object>/<sub_object_id>`: URLs in this format usually mean you are performing an operation on an individual sub-object.  An example of this is `$harvestService->deleteTagsForCandidate(array('id' => 123, 'second_id' => 234))`
+5. `https://harvest.greenhouse.io/v1/<object>/<opbject_id>/<sub_object>/<qualifier>`: Urls in this format usually mean you are trying to act on a limited universe of a type of sub-object.  An example of this is `$harvestService->deletePermissionForJobForUser(array('id' => 123));` which deletes the designated permission on a job from a user.
+6. Some method calls and URLs do not exactly fit this format, but the methods were named as close to fitting that format as possible.  These include:
   * `getActivityFeedForCandidate`: [Get a candidate's activity feed](https://developers.greenhouse.io/harvest.html#retrieve-activity-feed-for-candidate)
   * `postNoteForCandidate`: [Add a note to a candidate](https://developers.greenhouse.io/harvest.html#create-a-candidate-39-s-note)
   * `putAnonymizeCandidate`: [Anonymize some fields on a candidate](https://developers.greenhouse.io/harvest.html#anonymize-a-candidate)
   * `getCurrentOfferForApplication`: [Get only the current offer for a candidate](https://developers.greenhouse.io/harvest.html#retrieve-current-offer-for-application)
   * `postAdvanceApplication`: [Advance an application to the next stage](https://developers.greenhouse.io/harvest.html#advance-an-application)
   * `postMoveApplication`: [Move an application to any stage.](https://developers.greenhouse.io/harvest.html#move-an-application)
+  * `postTransferApplicationToJob`: [Move an application to a new job.](https://developers.greenhouse.io/harvest.html#post-move-application-different-job)
   * `postRejectApplication`: [Reject an application](https://developers.greenhouse.io/harvest.html#reject-an-application)
+  * `postUnrejectApplication`: [Unreject an application](https://developers.greenhouse.io/harvest.html#post-unreject-application)
+  * `postMergeCandidates`: [Merge a duplicate candidate to a primary candidate.](https://developers.greenhouse.io/harvest.html#put-merge-candidates)
+  * `getCandidateTags`: [Returns all candidate tags in your organization.](https://developers.greenhouse.io/harvest.html#get-list-candidate-tags)
+  * `getTagsForCandidate`: [Returns all tags applied to a single candidate.](https://developers.greenhouse.io/harvest.html#get-list-tags-applied-to-candidate)
+  * `getCustomFields`: [Returns all custom fields](): Note for this method, the id argument will contain the type of custom field you want to retrieve.  `$harvestService->getCustomFields('id' => 'job');` will return all the job custom fields in your organization. Leaving this argument blank will return all custom fields.
+  * `getTrackingLinks`: [Return a specific traking link for the supplied token.](https://developers.greenhouse.io/harvest.html#get-tracking-link-data-for-token): Note for this link, the token will be provided in the 'id' argument.  `$harvestService->getTrackingLink('id' => <token>);`
+  * `patchEnableUser`: [Enable a disabled user from accessing Greenhouse.](https://developers.greenhouse.io/harvest.html#patch-enable-user)
+  * `patchDisableUser`: [Disable a user from accessing Greenhouse.](https://developers.greenhouse.io/harvest.html#patch-disable-user)
 
 You should use the parameters array to supply any URL parameters and headers required by the harvest methods.  For any items that require a JSON body, this will also be supplied in the parameter array.  
-
 
 Ex: [Moving an application](https://developers.greenhouse.io/harvest.html#move-an-application)
 ```
@@ -208,6 +218,8 @@ $harvest->postCandidate($parameters);
 ```
 
 All Greenhouse Harvest methods that use Post will follow this convention.  In short, the JSON body as described in Greenhouse's provided documentation should be sent in the `body` parameter.
+
+**A note on custom fields**: The custom fields section of Harvest reacts a bit differently in that `getCustomFields` reacts differently than `getCustomField`.  In this case, `getCustomFields` takes a text id to limit the response to just the custom fields for a specific set of objects.  For example, you'd use `id => 'job'` to return only custom fields for a job.  While `getCustomField` takes a normal numeric to retrieve a single custom field.
 
 **A note on future development**: The Harvest package makes use PHP's magic `__call` method.  This is to handle Greenhouse's Harvest API advancing past this package.  New endpoint URLs should work automatically.  If Greenhouse adds a GET `https://harvest.greenhouse.io/v1/widgets` endpoint, calling `$harvestService->getWidgets()` should be supported by this package.
 

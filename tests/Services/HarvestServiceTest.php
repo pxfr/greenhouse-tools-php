@@ -93,6 +93,45 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testDeleteApplication()
+    {
+       $expected = array(
+            'method' => 'delete',
+            'url' => 'applications/12345',
+            'headers' => array('On-Behalf-Of' => 23456),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array(
+            'id' => 12345,
+            'headers' => array('On-Behalf-Of' => 23456)
+        );
+        
+        $this->harvestService->deleteApplication($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPatchApplication()
+    {
+       $expected = array(
+            'method' => 'patch',
+            'url' => 'applications/12345',
+            'headers' => array('On-Behalf-Of' => 23456),
+            'body' => '{"source_id": 1234}',
+            'parameters' => array()
+        );
+        $params = array(
+            'id' => 12345,
+            'body' => '{"source_id": 1234}',
+            'headers' => array('On-Behalf-Of' => 23456)
+        );
+        
+        $this->harvestService->patchApplication($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
     public function testPostAdvanceApplication()
     {
         $expected = array(
@@ -133,6 +172,26 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testPostTransferApplicationToJob()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'applications/12345/transfer_to_job',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"new_job_id": 345}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"new_job_id": 345}',
+            'id' => 12345
+        );
+
+        $this->harvestService->postTransferApplicationToJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
     public function testPostRejectApplication()
     {
         $expected = array(
@@ -153,6 +212,25 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testPostUnrejectApplication()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'applications/12345/unreject',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'id' => 12345
+        );
+
+        $this->harvestService->postUnrejectApplication($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
     public function testMoveApplicationRequiresId()
     {
         $params = array('noid' => 12345);
@@ -169,12 +247,28 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->harvestService->postAdvanceApplication($params);
     }
     
+    public function testPostTransferApplicationToJobIdRequiresId()
+    {
+        $params = array('noid' => 12345);
+        
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
+        $this->harvestService->postTransferApplicationToJob($params);
+    }
+    
     public function testRejectApplicationRequiresId()
     {
         $params = array('noid' => 12345);
         
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
         $this->harvestService->postRejectApplication($params);
+    }
+    
+    public function testPostUnrejectApplicationRequiresId()
+    {
+        $params = array('noid' => 12345);
+        
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
+        $this->harvestService->postUnrejectApplication($params);
     }
 
     public function testGetCandidatesNoPaging()
@@ -245,21 +339,22 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testPostCandidate()
+    public function testPostApplicationForCandidate()
     {
         $expected = array(
             'method' => 'post',
-            'url' => 'candidates',
+            'url' => 'candidates/12345/applications',
             'headers' => array('On-Behalf-Of' => 234),
-            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+            'body' => '{"update_json": "is_here"}',
             'parameters' => array()
         );
         $params = array(
             'headers' => array('On-Behalf-Of' => 234),
-            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+            'body' => '{"update_json": "is_here"}',
+            'id' => 12345
         );
-        
-        $this->harvestService->postCandidate($params);
+
+        $this->harvestService->postApplicationForCandidate($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
@@ -280,6 +375,64 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->harvestService->postAttachmentForCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPostCandidate()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'candidates',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+        );
+        
+        $this->harvestService->postCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPostNote()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'candidates/12345/activity_feed/notes',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_json": "is_here"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_json": "is_here"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->postNoteForCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+        
+    public function testPostProspect()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'prospects',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"first_name":"John","last_name":"Doe","phone_numbers":[{"value":"31012345","type":"other"}],"email_addresses":[{"value":"john@doe.com","type":"personal"}],"applications":[{"job_id":146855}]}',
+        );
+        
+        $this->harvestService->postProspect($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
@@ -305,22 +458,161 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testPostNote()
+    public function testPutMergeCandidate()
     {
         $expected = array(
-            'method' => 'post',
-            'url' => 'candidates/12345/activity_feed/notes',
+            'method' => 'put',
+            'url' => 'candidates/merge',
             'headers' => array('On-Behalf-Of' => 234),
-            'body' => '{"update_json": "is_here"}',
+            'body' => '{"primary_candidate_id":123,"duplicate_candidate_id":234}',
             'parameters' => array()
         );
         $params = array(
             'headers' => array('On-Behalf-Of' => 234),
-            'body' => '{"update_json": "is_here"}',
+            'body' => '{"primary_candidate_id":123,"duplicate_candidate_id":234}'
+        );
+        
+        $this->harvestService->putMergeCandidates($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetCustomFieldsNoPaging()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'custom_fields/',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+        
+        $this->harvestService->getCustomFields($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetCustomFieldsPaging()
+    {
+        $params = array('page' => 2, 'per_page' => 100);
+        $expected = array(
+            'method' => 'get',
+            'url' => 'custom_fields/',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => $params
+        );
+            
+        $this->harvestService->getCustomFields($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testGetCustomFieldWithType()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'custom_fields/job',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 'job');
+
+        $this->harvestService->getCustomFields($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetCustomField()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'custom_field/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => '12345');
+
+        $this->harvestService->getCustomField($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetCustomFieldOptionsForCustomField()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'custom_field/12345/custom_field_options',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => '12345');
+
+        $this->harvestService->getCustomFieldOptionsForCustomField($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPostCustomFieldOptionsForCustomField()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'custom_field/12345/custom_field_options',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
             'id' => 12345
         );
 
-        $this->harvestService->postNoteForCandidate($params);
+        $this->harvestService->postCustomFieldOptionsForCustomField($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testDeleteCustomFieldOptionsForCustomField()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'custom_field/12345/custom_field_options',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->deleteCustomFieldOptionsForCustomField($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPatchCustomFieldOptionsForCustomField()
+    {
+        $expected = array(
+            'method' => 'patch',
+            'url' => 'custom_field/12345/custom_field_options',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->patchCustomFieldOptionsForCustomField($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
@@ -371,6 +663,73 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->harvestService->getDepartments($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPostDepartment()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'departments',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}'
+        );
+
+        $this->harvestService->postDepartments($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testGetEeocNoPaging()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'eeoc',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+            
+        $this->harvestService->getEeoc($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testGetEeocWithPaging()
+    {
+        $params = array('per_page' => 100);
+        $expected = array(
+            'method' => 'get',
+            'url' => 'eeoc',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => $params
+        );
+            
+        $this->harvestService->getEeoc($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testGetEeocById()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'eeoc/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getEeoc($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
     }
     
     public function testGetEmailTemplatesNoPaging()
@@ -469,6 +828,26 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testPatchJobPost()
+    {
+        $expected = array(
+            'method' => 'patch',
+            'url' => 'job_posts/12345',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->patchJobPost($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
     public function testGetJobStagesForJob()
     {
         $expected = array(
@@ -529,6 +908,66 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $params = array('id' => 12345);
 
         $this->harvestService->getJobs($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testPatchJob()
+    {
+        $expected = array(
+            'method' => 'patch',
+            'url' => 'jobs/12345',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->patchJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPostJob()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'jobs/12345',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->postJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPutHiringTeamForJob()
+    {
+        $expected = array(
+            'method' => 'put',
+            'url' => 'jobs/12345/hiring_team',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->putHiringTeamForJob($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
@@ -645,25 +1084,6 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testDeleteApplication()
-    {
-       $expected = array(
-            'method' => 'delete',
-            'url' => 'applications/12345',
-            'headers' => array('On-Behalf-Of' => 23456),
-            'body' => null,
-            'parameters' => array()
-        );
-        $params = array(
-            'id' => 12345,
-            'headers' => array('On-Behalf-Of' => 23456)
-        );
-        
-        $this->harvestService->deleteApplication($params);
-        $this->assertEquals($expected, $this->harvestService->getHarvest());
-        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
-    }
-    
     public function testGetOfficesPaging()
     {
         $params = array('page' => 2, 'per_page' => 100);
@@ -695,6 +1115,27 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
+    
+    public function testPostOffice()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'offices',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}'
+        );
+
+        $this->harvestService->postOffice($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());  
+    }  
+
     
     public function testGetRejectionReasonsNoPaging()
     {
@@ -756,6 +1197,22 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         );
             
         $this->harvestService->getScheduledInterviews($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetScheduledInterviewById()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'scheduled_interviews/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getScheduledInterview($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
@@ -880,6 +1337,70 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testGetCandidateTags()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'tags/candidate',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getCandidateTags($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetTagsForCandidate()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'candidates/12345/tags',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getTagsForCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testDeleteTagsForCandidate()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'candidates/12345/tags/2345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345, 'second_id' => 2345);
+
+        $this->harvestService->deleteTagsForCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPutTagsForCandidate()
+    {
+        $expected = array(
+            'method' => 'put',
+            'url' => 'candidates/12345/tags/2345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345, 'second_id' => 2345);
+
+        $this->harvestService->putTagsForCandidate($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
     public function testGetUsersNoPaging()
     {
         $expected = array(
@@ -927,4 +1448,175 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
+    
+    public function testPatchDisableUser()
+    {
+        $expected = array(
+            'method' => 'patch',
+            'url' => 'users/12345/disable',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->patchDisableUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testPatchEnableUser()
+    {
+        $expected = array(
+            'method' => 'patch',
+            'url' => 'users/12345/enable',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->patchEnableUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());    
+    }
+    
+    public function testPostUser()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'users',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}'
+        );
+
+        $this->harvestService->postUsers($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testGetPermissionForJobForUser()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'users/12345/permissions/jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getPermissionForJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testDeletePermissionForJobForUser()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'users/12345/permissions/jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->deletePermissionForJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPutPermissionForJobForUser()
+    {
+        $expected = array(
+            'method' => 'put',
+            'url' => 'users/12345/permissions/jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->putPermissionForJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetPermissionForFutureJobForUser()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'users/12345/permissions/future_jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getPermissionForFutureJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testDeletePermissionForFutureJobForUser()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'users/12345/permissions/future_jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->deletePermissionForFutureJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+    
+    public function testPutPermissionForFutureJobForUser()
+    {
+        $expected = array(
+            'method' => 'put',
+            'url' => 'users/12345/permissions/future_jobs',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->putPermissionForFutureJobForUser($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+        
+    public function testGetUserRoles()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'user_roles',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getUserRoles($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }    
 }

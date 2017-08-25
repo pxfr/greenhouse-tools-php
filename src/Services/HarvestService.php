@@ -119,12 +119,112 @@ class HarvestService extends ApiService
         return $this->_trimUrlAndSendRequest();
     }
 
+    public function postTransferApplicationToJob($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('postTransferToJobForApplication', $parameters);
+        return $this->_trimUrlAndSendRequest();
+    }
+
     public function postRejectApplication($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('postRejectForApplication', $parameters);
         return $this->_trimUrlAndSendRequest();
     }
+    
+    public function postUnrejectApplication($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('postUnrejectForApplication', $parameters);
+        return $this->_trimUrlAndSendRequest();
+    }
+    
+    public function putMergeCandidates($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('putMergeCandidate', $parameters);
+        $this->_harvest['url'] = 'candidates/merge';
+        $this->sendRequest();
+    }
+    
+    /**
+     * It is explicitely required to do custom field here because we require the trailing slash, because
+     * in this case Sinatra didn't give us an option not to.
+     */
+    public function getCustomFields($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getCustomFields', $parameters);
+        if (!array_key_exists('id', $parameters)) $this->_harvest['url'] = $this->_harvest['url'] . '/';
+        $this->sendRequest();
+    }
+    
+    public function getCustomField($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getCustomFields', $parameters);
+        $this->_harvest['url'] = 'custom_field/' . $parameters['id'];
+        $this->sendRequest();
+    }
+    
+    public function getCustomFieldOptionsForCustomField($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getCustomFieldOptionsForCustomField', $parameters);
+        $this->_harvest['url'] = 'custom_field/' . $parameters['id'] . '/custom_field_options';
+        $this->sendRequest();
+    }
 
+    public function postCustomFieldOptionsForCustomField($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('postCustomFieldOptionsForCustomField', $parameters);
+        $this->_harvest['url'] = 'custom_field/' . $parameters['id'] . '/custom_field_options';
+        $this->sendRequest();
+    }
+
+    public function deleteCustomFieldOptionsForCustomField($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('deleteCustomFieldOptionsForCustomField', $parameters);
+        $this->_harvest['url'] = 'custom_field/' . $parameters['id'] . '/custom_field_options';
+        $this->sendRequest();
+    }
+
+    public function patchCustomFieldOptionsForCustomField($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('patchCustomFieldOptionsForCustomField', $parameters);
+        $this->_harvest['url'] = 'custom_field/' . $parameters['id'] . '/custom_field_options';
+        $this->sendRequest();
+    }
+    
+    public function getEeoc($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getEeoc', $parameters);
+        $this->_harvest['url'] = array_key_exists('id', $parameters) ? 'eeoc/' . $parameters['id'] : 'eeoc';
+        $this->sendRequest();
+    }
+    
+    public function putHiringTeamForJob($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('putHiringTeamForJob', $parameters);
+        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
+        $this->sendRequest();
+    }
+    
+    public function getCandidateTags($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getCandidateTags', $parameters);
+        $this->_harvest['url'] = 'tags/candidate';
+        $this->sendRequest();
+    }
+    
+    public function patchEnableUser($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('patchEnableUser', $parameters);
+        $this->_harvest['url'] = 'users/' . $parameters['id'] . '/enable';
+        $this->sendRequest();
+    }
+    
+    public function patchDisableUser($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('patchDisableUser', $parameters);
+        $this->_harvest['url'] = 'users/' . $parameters['id'] . '/disable';
+        $this->sendRequest();
+    }
+    
     private function _trimUrlAndSendRequest()
     {
         $this->_harvest['url'] = substr($this->_harvest['url'], 0, -1);
