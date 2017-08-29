@@ -7,13 +7,13 @@ php:
         - '7.0'
 
 hooks:
-  pre_setup: composer.phar install
+  pre_setup: composer install
   
 tests:
   - type: phpunit
     mode: parallel
     output: exit-status
-    command: vendor/bin/solano-phpunit
+    command: vendor/bin/phpunit
     config: phpunit.xml 
     files:
       - tests/**Test.php
