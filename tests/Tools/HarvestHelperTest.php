@@ -130,10 +130,42 @@ class HarvestHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $this->parser->parse('getEmailTemplateForActivityFeed', $params));
     }
     
+    public function testParseGetDoubleWordMethodWithSecondId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'activity_feeds/12345/email_templates/2345',
+            'parameters' => $this->parameters,
+            'headers' => array(),
+            'body' => null
+        );
+        $params = array_merge($this->parameters, array('id' => 12345, 'second_id' => 2345));
+        $this->assertEquals($expected, $this->parser->parse('getEmailTemplateForActivityFeed', $params));
+    }
+    
     public function testParseGetDoubleWordMethodWithForNoId()
     {
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
         $this->parser->parse('getScorecardsForApplication', array());
+    }
+    
+    public function testParseTripleWordMethod()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'users/12345/permissions/jobs',
+            'parameters' => $this->parameters,
+            'headers' => array(),
+            'body' => null
+        );
+        $params = array_merge($this->parameters, array('id' => 12345));
+        $this->assertEquals($expected, $this->parser->parse('deletePermissionForJobForUser', $params));
+    }
+    
+    public function testParseTripleWordMethodRequiresId()
+    {
+        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
+        $this->parser->parse('deletePermissionForJobForUser', array());
     }
     
     public function testBadHttpMethodFails()

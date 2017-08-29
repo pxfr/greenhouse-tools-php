@@ -22,6 +22,7 @@ class HarvestHelper
         $return['url'] = $this->methodToEndpoint($matches[2], $parameters);
         
         if (isset($parameters['id'])) unset($parameters['id']);
+        if (isset($parameters['second_id'])) unset($parameters['second_id']);
         if (isset($parameters['headers'])) {
             $return['headers'] = $parameters['headers'];
             unset($parameters['headers']);
@@ -43,6 +44,7 @@ class HarvestHelper
     public function methodToEndpoint($methodText, $parameters)
     {
         $id = isset($parameters['id']) ? $parameters['id'] : null;
+        $secondId = isset($parameters['second_id']) ? $parameters['second_id'] : null;
         $objects = explode('For', $methodText);
         
         // A single object, just return the snaked version of it.
@@ -54,6 +56,14 @@ class HarvestHelper
         } else if (sizeof($objects) == 2) {
             if (!$id) throw new GreenhouseServiceException("Harvest Service: method call $methodText must include an id parameter");
             $url = $this->_decamelizeAndPluralize($objects[1]) . "/$id/" . $this->_decamelizeAndPluralize($objects[0]);
+            $url = $secondId ? $url . '/' . $secondId : $url;
+        
+        // Triple object, expect the format object/id/object/object
+        } else if (sizeof($objects) == 3) {
+            if (!$id) throw new GreenhouseServiceException("Harvest Service: method call $methodText must include an id parameter");
+            $url = $this->_decamelizeAndPluralize($objects[2]) . "/$id/" . 
+                    $this->_decamelizeAndPluralize($objects[0]) . '/' . 
+                    $this->_decamelizeAndPluralize($objects[1]);
         } else {
             throw new GreenhouseServiceException("Harvest Service: Invalid method call $methodText.");
         }
