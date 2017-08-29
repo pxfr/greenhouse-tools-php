@@ -2,8 +2,6 @@ php:
   php_version:
     SPLIT:
         - '5.6'
-        - '5.7'
-        - '6.0'
         - '7.0'
 
 hooks:
