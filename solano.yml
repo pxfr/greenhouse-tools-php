@@ -13,7 +13,7 @@ tests:
   - type: phpunit
     mode: parallel
     output: exit-status
-    command: vendor/bin/phpunit
+    command: vendor/bin/solano-phpunit
     config: phpunit.xml 
     files:
       - tests/**Test.php
@@ -22,4 +22,5 @@ cache:
   key_paths:
     - composer.json
     - composer.lock
-  nocache: true
+  save_paths:
+    - vendor
