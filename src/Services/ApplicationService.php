@@ -122,10 +122,33 @@ class ApplicationService extends ApiService
     public function hasRequiredValue($postVars, $keys)
     {
         foreach ($keys as $key) {
-            if (array_key_exists($key, $postVars) && $postVars[$key] !== '') return true;
+            $requiredKey = $this->findKey($key, $postVars);
+            if (array_key_exists($requiredKey, $postVars) && $postVars[$requiredKey] !== '') return true;
         }
 
         return false;
+    }
+    
+    /**
+     * This fixes an issue where the Greenhouse API returns required multiselects as <field[]> but we require
+     * the user to submit it as <field>, thus making the system think the required field is not set.  This
+     * checks that either <field> or <field[]> is set, in order to work correctly but also be backward 
+     * compatable in case external systems have already correct for it.
+     * 
+     * @params  Array   $key        The key to check for in $postVars
+     * @params  Array   $postVars   Greenhouse post parameters.
+     * @return  Mixed   string/null
+     */
+    public function findKey($key, $postVars)
+    {
+        $multiselectKey = str_replace('[]', '', $key);
+        if (array_key_exists($key, $postVars)) {
+            return $key;
+        } else if (array_key_exists($multiselectKey, $postVars)) {
+            return $multiselectKey;
+        } else {
+            return null;
+        }
     }
     
     /**
