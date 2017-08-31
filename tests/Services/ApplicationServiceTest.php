@@ -18,6 +18,12 @@ class ApplicationServiceTest extends \PHPUnit_Framework_TestCase
         return file_get_contents("$root/../files/test_json/single_job_response.json");
     }
     
+    public function getTestJobJsonWithMultiselect()
+    {
+        $root = realpath(dirname(__FILE__));
+        return file_get_contents("$root/../files/test_json/single_job_response_with_multiselect_required.json");
+    }
+    
     public function getTestJobJsonNothingRequired()
     {
         $root = realpath(dirname(__FILE__));
@@ -72,6 +78,54 @@ class ApplicationServiceTest extends \PHPUnit_Framework_TestCase
             'resume_text' => 'Builder',
             'cover_letter_text' => 'I built things',
             'question_1042159' => 'stuff'
+        );
+        
+        $this->assertTrue($this->appService->validateRequiredFields($postVars));
+    }
+    
+    public function testValidateRequiredFieldsWithMultiselect()
+    {
+        $apiStub = $this->getMockBuilder('\Greenhouse\GreenhouseToolsPhp\Services\JobApiService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+        $apiStub->method('getJob')->willReturn($this->getTestJobJsonWithMultiselect());
+        $this->appService->setJobApiService($apiStub);
+        
+        $postVars = array(
+            'id' => '12345',
+            'first_name' => 'Hiram',
+            'last_name' => 'Abiff',
+            'email' => 'widowson@example.com',
+            'resume_text' => 'Builder',
+            'cover_letter_text' => 'I built things',
+            'question_1042159' => 'stuff',
+            'question_579460' => array(225451, 225452)
+        );
+        
+        $this->assertTrue($this->appService->validateRequiredFields($postVars));
+    }
+    
+    /**
+     * Backward compatable version.  This is how we checked required fields originally (with the square
+     * brackets, as returned by the API, but not how we required the request to be submitted.
+     */
+    public function testValidateRequiredFieldsWithMultiselectLegacy()
+    {
+        $apiStub = $this->getMockBuilder('\Greenhouse\GreenhouseToolsPhp\Services\JobApiService')
+                        ->disableOriginalConstructor()
+                        ->getMock();
+        $apiStub->method('getJob')->willReturn($this->getTestJobJsonWithMultiselect());
+        $this->appService->setJobApiService($apiStub);
+        
+        $postVars = array(
+            'id' => '12345',
+            'first_name' => 'Hiram',
+            'last_name' => 'Abiff',
+            'email' => 'widowson@example.com',
+            'resume_text' => 'Builder',
+            'cover_letter_text' => 'I built things',
+            'question_1042159' => 'stuff',
+            'question_579460[]' => array(225451, 225452)
         );
         
         $this->assertTrue($this->appService->validateRequiredFields($postVars));
