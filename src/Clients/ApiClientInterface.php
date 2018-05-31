@@ -47,4 +47,19 @@ interface ApiClientInterface
      * future client.
      */
     public function send($method, $url, Array $options);
+    
+    /**
+     * These methods are to return the paging links as described in the Harvest docs. We return a Link header
+     * with paging information in next/previous/last format. For Harvest's two paging systems, only the 
+     * getNextLink() method is relevant for both.
+     */
+    public function getNextLink();
+    public function getPrevLink();
+    public function getLastLink();
+    
+    /**
+     * Return the raw response from the client. In case users want information that is otherwise unavailable
+     * through this package.
+     */
+    public function getResponse();
 }

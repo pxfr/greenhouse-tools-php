@@ -126,7 +126,7 @@ This prevents issues that arise for systems that do not understand the array-ind
 Use this service to interact with the Harvest API in Greenhouse.  Documentation for the Harvest API [can be found here.](https://developers.greenhouse.io/harvest.html/)  The purpose of this service is to make interactions with the Harvest API easier.  To create a Harvest Service object, you must supply an active Harvest API key.  Note that these are different than Job Board API keys.
 ```
 <?php
-$harvestService = $greenhouseService->getHarvestService();
+  $harvestService = $greenhouseService->getHarvestService();
 ?>
 ```
 
@@ -185,6 +185,19 @@ $harvestService->getApplications($parameters);
 If the ID key is supplied in any way, that will take precedence.
 
 Ex: [Adding a candidate to Greenhouse](https://developers.greenhouse.io/harvest.html#post-add-candidate)
+
+**A note on paging**: As mentioned in the Harvest documentation, Greenhouse supports two methods of paging depending on the endpoint. The next page is returned in a Link header. The next page link is accessible in the Harvest Service at:
+
+```
+  $harvestService->nextLink();
+```
+
+The link returned by this method will give you the next page of objects on this endpoint. Depending on which paging method the endpoint supports, the link returned will look like one of the following:
+
+- `https://harvest.greenhouse.io/v1/<object>?page=2&per_page=100`
+- `https://harvest.greenhouse.io/v1/<object>/?since_id=161963`
+
+If the nextLink() method returns nothing, you have reached the last page.
 
 Greenhouse includes several methods in Harvest to POST new objects.  It should be noted that the creation of candidates and applications in Harvest differs from the Application service above.  Documents via Harvest can only be received via binary content or by including a URL which contains the document.  As such, the Harvest service uses the `body` parameter in Guzzle instead of including POST parameters.
 ```
