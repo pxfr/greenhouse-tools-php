@@ -5,6 +5,7 @@ namespace Greenhouse\GreenhouseToolsPhp\Clients;
 use Greenhouse\GreenhouseToolsPhp\Clients\ApiClientInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7;
 use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIClientException;
 use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException;
 
@@ -13,7 +14,11 @@ use Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseExcept
  */
 class GuzzleClient implements ApiClientInterface
 {
+    public $guzzleResponse;
     private $_client;
+    private $_nextLink;
+    private $_prevLink;
+    private $_lastLink;
     
     /**
      * Constructor should receive an array that would be understood by the Guzzle
@@ -39,7 +44,8 @@ class GuzzleClient implements ApiClientInterface
     public function get($url="")
     {
         try {
-            $guzzleResponse = $this->_client->request('GET', $url);
+            $this->guzzleResponse = $this->_client->request('GET', $url);
+            $this->_setLinks();
         } catch (RequestException $e) {
             throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
         }
@@ -48,7 +54,7 @@ class GuzzleClient implements ApiClientInterface
          * Just return the response cast as a string.  The rest of the universe need
          * not be aware of Guzzle's details.
          */
-        return (string) $guzzleResponse->getBody();
+        return (string) $this->guzzleResponse->getBody();
     }
     
     /**
@@ -63,7 +69,7 @@ class GuzzleClient implements ApiClientInterface
     public function post(Array $postVars, Array $headers, $url=null)
     {
         try {
-            $guzzleResponse = $this->_client->request(
+            $this->guzzleResponse = $this->_client->request(
                 'POST',
                 $url,
                 array('multipart' => $postVars, 'headers' => $headers)
@@ -72,18 +78,19 @@ class GuzzleClient implements ApiClientInterface
             throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
         }
         
-        return (string) $guzzleResponse->getBody();
+        return (string) $this->guzzleResponse->getBody();
     }
     
     public function send($method, $url, Array $options=array())
     {
         try {
-            $guzzleResponse = $this->_client->request($method, $url, $options);
+            $this->guzzleResponse = $this->_client->request($method, $url, $options);
+            $this->_setLinks();
         } catch (RequestException $e) {
             throw new GreenhouseAPIResponseException($e->getMessage(), 0, $e);
         }
         
-        return (string) $guzzleResponse->getBody();
+        return (string) $this->guzzleResponse->getBody();
     }
     
     /**
@@ -121,5 +128,42 @@ class GuzzleClient implements ApiClientInterface
     public function getClient()
     {
         return $this->_client;
+    }
+    
+    /**
+     * Set the next/prev/last links using the current response object.
+     */
+    private function _setLinks()
+    {
+        $links = Psr7\parse_header($this->guzzleResponse->getHeader('Link'));
+        foreach ($links as $link) {
+            if ($link['rel'] == 'last') {
+                $this->_lastLink = str_replace(['<', '>'], '', $link[0]);
+            } elseif ($link['rel'] == 'next') {
+                $this->_nextLink = str_replace(['<', '>'], '', $link[0]);
+            } elseif ($link['rel'] == 'prev') {
+                $this->_prevLink = str_replace(['<', '>'], '', $link[0]);
+            }
+        }
+    }
+    
+    public function getNextLink()
+    {
+        return $this->_nextLink;
+    }
+
+    public function getPrevLink()
+    {
+        return $this->_prevLink;
+    }
+
+    public function getLastLink()
+    {
+        return $this->_lastLink;
+    }
+    
+    public function getResponse()
+    {
+        return $this->guzzleResponse;
     }
 }

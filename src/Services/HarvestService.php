@@ -43,6 +43,25 @@ class HarvestService extends ApiService
     }
     
     /**
+     * The following 3 methods are for Harvest Paging. They return paging info from the Link header (if it
+     * exists). Paging is complete if 'nextLink' returns nothing.
+     */
+    public function nextLink()
+    {
+        return $this->_apiClient->getNextLink();
+    }
+    
+    public function prevLink()
+    {
+        return $this->_apiClient->getPrevLink();
+    }
+    
+    public function lastLink()
+    {
+        return $this->_apiClient->getLastLink();
+    }
+    
+    /**
      * In order to keep up to date with changes to the Harvest api and not trigger a re-release of this 
      * package each time a new method is created, the magic Call method is used to construct URLs to the
      * Harvest API.  This will use the called method and the arguments provided to create the proper URL

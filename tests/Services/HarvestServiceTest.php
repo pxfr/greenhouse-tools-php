@@ -3,6 +3,7 @@
 namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 
 use Greenhouse\GreenhouseToolsPhp\Services\HarvestService;
+use Greenhouse\GreenhouseToolsPhp\GreenhouseService;
 
 /**
  * This test only tests that the service requests generate the expected links and arrays.  This does not
@@ -15,10 +16,29 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->harvestService = new HarvestService('greenhouse');
         $apiStub = $this->getMockBuilder('\Greenhouse\GreenhouseToolsPhp\Client\GuzzleClient')
-                        ->setMethods(array('send'))
+                        ->setMethods(array('send', 'getNextLink', 'getPrevLink', 'getLastLink'))
                         ->getMock();
+        $apiStub->method('getNextLink')->willReturn('http://example.com/next');
+        $apiStub->method('getPrevLink')->willReturn('http://example.com/prev');
+        $apiStub->method('getLastLink')->willReturn('http://example.com/last');
+
         $this->harvestService->setClient($apiStub);
         $this->expectedAuth = 'Basic Z3JlZW5ob3VzZTo=';
+    }
+    
+    public function testGetNextLink()
+    {
+        $this->assertEquals($this->harvestService->nextLink(), 'http://example.com/next');
+    }
+    
+    public function testGetPrevLink()
+    {
+        $this->assertEquals($this->harvestService->prevLink(), 'http://example.com/prev');
+    }
+    
+    public function testGetLastLink()
+    {
+        $this->assertEquals($this->harvestService->lastLink(), 'http://example.com/last');
     }
     
     public function testGetActivityFeed()

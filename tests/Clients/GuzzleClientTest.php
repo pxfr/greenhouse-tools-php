@@ -3,6 +3,7 @@
 namespace Greenhouse\GreenhouseToolsPhp\Tests\Clients;
 
 use Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient;
+use Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse;
 
 class GuzzleClientTest extends \PHPUnit_Framework_TestCase
 {
@@ -71,5 +72,84 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($response[5], ['name' => 'talents[]', 'contents' => 'stuff']);
         $this->assertEquals($response[6]['name'],       'resume');
         $this->assertEquals($response[6]['filename'],   'resume');
+    }
+    
+    public function testLinksAllIncluded()
+    {
+        $linksResponse = array(
+            '<https://harvest.greenhouse.io/v1/candidates?page=3&per_page=100>; rel="next",' .
+            '<https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100>; rel="prev",' .
+            '<https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100>; rel="last"'
+        );
+
+        $mockResponse = $this->createMock('Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse');
+        $mockResponse->method('getHeader')
+                     ->willReturn($linksResponse);
+        $this->client->guzzleResponse = $mockResponse;
+
+        $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
+        $method = $reflector->getMethod('_setLinks');
+        $method->setAccessible(true);
+        
+        $this->assertEquals($this->client->getNextLink(), '');
+        $this->assertEquals($this->client->getPrevLink(), '');
+        $this->assertEquals($this->client->getLastLink(), '');
+        
+        $method->invokeArgs($this->client, array());
+
+        $this->assertEquals($this->client->getNextLink(), 'https://harvest.greenhouse.io/v1/candidates?page=3&per_page=100');
+        $this->assertEquals($this->client->getPrevLink(), 'https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100');
+        $this->assertEquals($this->client->getLastLink(), 'https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100');
+    }
+    
+    public function testLinksNoneIncluded()
+    {
+        $linksResponse = array('');
+        
+        $mockResponse = $this->createMock('Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse');
+        $mockResponse->method('getHeader')
+                     ->willReturn($linksResponse);
+        $this->client->guzzleResponse = $mockResponse;
+
+        $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
+        $method = $reflector->getMethod('_setLinks');
+        $method->setAccessible(true);
+        
+        $this->assertEquals($this->client->getNextLink(), '');
+        $this->assertEquals($this->client->getPrevLink(), '');
+        $this->assertEquals($this->client->getLastLink(), '');
+        
+        $method->invokeArgs($this->client, array());
+
+        $this->assertEquals($this->client->getNextLink(), '');
+        $this->assertEquals($this->client->getPrevLink(), '');
+        $this->assertEquals($this->client->getLastLink(), '');
+    }
+    
+    public function testLinksSomeIncluded()
+    {
+        $linksResponse = array(
+            '<https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100>; rel="prev",' .
+            '<https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100>; rel="last"'
+        );
+        
+        $mockResponse = $this->createMock('Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse');
+        $mockResponse->method('getHeader')
+                     ->willReturn($linksResponse);
+        $this->client->guzzleResponse = $mockResponse;
+
+        $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
+        $method = $reflector->getMethod('_setLinks');
+        $method->setAccessible(true);
+        
+        $this->assertEquals($this->client->getNextLink(), '');
+        $this->assertEquals($this->client->getPrevLink(), '');
+        $this->assertEquals($this->client->getLastLink(), '');
+        
+        $method->invokeArgs($this->client, array());
+
+        $this->assertEquals($this->client->getNextLink(), '');
+        $this->assertEquals($this->client->getPrevLink(), 'https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100');
+        $this->assertEquals($this->client->getLastLink(), 'https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100');    
     }
 }
