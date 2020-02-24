@@ -253,6 +253,86 @@ class ApplicationServiceTest extends \PHPUnit_Framework_TestCase
         
         $this->assertTrue($this->appService->hasRequiredValue($postVars, $keys));
     }
+    
+    public function testHasBinaryFilenameFieldPass()
+    {
+        $postVars = array('foo' => '', 'foo_content' => 'abce', 'foo_content_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertTrue($this->appService->hasRequiredValue($postVars, $keys));
+    }
+    
+    public function testHasBinaryFilenameFieldFailContentBlank()
+    {
+        $postVars = array('foo' => '', 'foo_content' => '', 'foo_content_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasBinaryFilenameFieldFailContentNotIncluded()
+    {
+        $postVars = array('foo' => '', 'foo_content_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasBinaryFilenameFieldFailFilenameBlank()
+    {
+        $postVars = array('foo' => '', 'foo_content' => 'abce', 'foo_content_filename' => '');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasBinaryFilenameFieldFailFilenameNotIncluded()
+    {
+        $postVars = array('foo' => '', 'foo_content' => 'abcde');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+    
+    public function testHasUrlFilenameFieldPass()
+    {
+        $postVars = array('foo' => '', 'foo_url' => 'http://t.co', 'foo_url_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertTrue($this->appService->hasRequiredValue($postVars, $keys));
+    }
+    
+    public function testHasUrlFilenameFieldFailUrlBlank()
+    {
+        $postVars = array('foo' => '', 'foo_url' => '', 'foo_url_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasUrlFilenameFieldFailUrlFilenameBlank()
+    {
+        $postVars = array('foo' => '', 'foo_url' => 'http://t.co', 'foo_url_filename' => '');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasUrlFilenameFieldFailUrlNotIncluded()
+    {
+        $postVars = array('foo' => '', 'foo_url_filename' => 'test.pdf');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
+
+    public function testHasUrlFilenameFieldFailUrlFilenameNotIncluded()
+    {
+        $postVars = array('foo' => '', 'foo_url' => 'http://t.co');
+        $keys = array('foo');
+        
+        $this->assertFalse($this->appService->hasRequiredValue($postVars, $keys));
+    }
 
     public function testGetRequiredFields()
     {

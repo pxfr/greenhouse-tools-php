@@ -125,7 +125,47 @@ class ApplicationService extends ApiService
             $requiredKey = $this->findKey($key, $postVars);
             if (array_key_exists($requiredKey, $postVars) && $postVars[$requiredKey] !== '') return true;
         }
+        
+        if ($this->_hasRequiredValuesForFiles($postVars, $key)) return true;
 
+        return false;
+    }
+    
+    /**
+     * Previously, Greenhouse only accepted files in one way via resume and resume_text. Since, they 
+     * included the ability to send files by linking to them or via binary content. However, they still
+     * only mark the resume as required using the 'resume' field in the jobs description. This method also
+     * checks the alternatives. The alternatives are:
+     *   <field>_content and <field>_content_filename
+     *   <field>_url and <field>_url_filename
+     * If either of these are included, the requirement should pass. This is the case for resume 
+     * and cover_letter; and also the case for custom questions which may also contain a file.
+     *
+     * @params  Array   $postVars   Greenhouse post parameters
+     * @params  string  $key        The key we are validating
+     * @return  boolean
+     */
+    private function _hasRequiredValuesForFiles($postVars, $key)
+    {
+        $contentKey = "${key}_content";
+        $contentFilenameKey = "${key}_content_filename";
+        $urlKey = "${key}_url";
+        $urlFilenameKey = "${key}_url_filename";
+        
+        if (array_key_exists($contentKey, $postVars) && 
+            array_key_exists($contentFilenameKey, $postVars) && 
+            $postVars[$contentKey] !== '' &&
+            $postVars[$contentFilenameKey] !== '') {
+            return true;
+        }
+        
+        if (array_key_exists($urlKey, $postVars) && 
+            array_key_exists($urlFilenameKey, $postVars) && 
+            $postVars[$urlKey] !== '' &&
+            $postVars[$urlFilenameKey] !== '') {
+            return true;
+        }
+        
         return false;
     }
     
