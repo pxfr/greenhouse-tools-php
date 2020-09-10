@@ -106,6 +106,8 @@ $appService->postApplication($postParams);
 
 ?>
 ```
+
+## Submitting Multiselect Answers 
 The Application will handle generating an Authorization header based on your API key and posting the application as a multi-part form.  This parameter array follows the PHP convention except for the case of multiselect submission (submitting parameters with the same name).  While the PHP docs want users to submit multiple values like this:
 
 ```
