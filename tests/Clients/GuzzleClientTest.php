@@ -20,10 +20,10 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
             '\Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient',
             $client
         );
-        
+
         $this->assertInstanceOf('\GuzzleHttp\Client', $client->getClient());
     }
-    
+
     public function testGetException()
     {
         $errorUrl = 'https://api.greenhouse.io/v1/boards/exception_co/embed/';
@@ -31,7 +31,7 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $response = $client->get('jobs');
     }
-    
+
     public function testFormatPostParametersNoFiles()
     {
         $postVars = array(
@@ -47,10 +47,10 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
             ['name' => 'talents[]', 'contents' => 'and'],
             ['name' => 'talents[]', 'contents' => 'stuff']
         );
-        
+
         $this->assertEquals($expected, $this->client->formatPostParameters($postVars));
     }
-    
+
     public function testFormatPostParametersWithFiles()
     {
         $testDoc = new \CURLFile($this->resumePath, 'application/msword', 'resume');
@@ -61,9 +61,9 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
             'talents' => array('building', 'things', 'and', 'stuff'),
             'resume' =>  $testDoc
         );
-        
+
         $response = $this->client->formatPostParameters($postVars);
-        
+
         $this->assertEquals($response[0], ['name' => 'first_name', 'contents' => 'Hiram']);
         $this->assertEquals($response[1], ['name' => 'last_name', 'contents' => 'Abiff']);
         $this->assertEquals($response[2], ['name' => 'talents[]', 'contents' => 'building']);
@@ -73,7 +73,7 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($response[6]['name'],       'resume');
         $this->assertEquals($response[6]['filename'],   'resume');
     }
-    
+
     public function testLinksAllIncluded()
     {
         $linksResponse = array(
@@ -90,22 +90,22 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
         $method = $reflector->getMethod('_setLinks');
         $method->setAccessible(true);
-        
+
         $this->assertEquals($this->client->getNextLink(), '');
         $this->assertEquals($this->client->getPrevLink(), '');
         $this->assertEquals($this->client->getLastLink(), '');
-        
+
         $method->invokeArgs($this->client, array());
 
         $this->assertEquals($this->client->getNextLink(), 'https://harvest.greenhouse.io/v1/candidates?page=3&per_page=100');
         $this->assertEquals($this->client->getPrevLink(), 'https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100');
         $this->assertEquals($this->client->getLastLink(), 'https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100');
     }
-    
+
     public function testLinksNoneIncluded()
     {
         $linksResponse = array('');
-        
+
         $mockResponse = $this->createMock('Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse');
         $mockResponse->method('getHeader')
                      ->willReturn($linksResponse);
@@ -114,25 +114,25 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
         $method = $reflector->getMethod('_setLinks');
         $method->setAccessible(true);
-        
+
         $this->assertEquals($this->client->getNextLink(), '');
         $this->assertEquals($this->client->getPrevLink(), '');
         $this->assertEquals($this->client->getLastLink(), '');
-        
+
         $method->invokeArgs($this->client, array());
 
         $this->assertEquals($this->client->getNextLink(), '');
         $this->assertEquals($this->client->getPrevLink(), '');
         $this->assertEquals($this->client->getLastLink(), '');
     }
-    
+
     public function testLinksSomeIncluded()
     {
         $linksResponse = array(
             '<https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100>; rel="prev",' .
             '<https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100>; rel="last"'
         );
-        
+
         $mockResponse = $this->createMock('Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse');
         $mockResponse->method('getHeader')
                      ->willReturn($linksResponse);
@@ -141,15 +141,15 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $reflector = new \ReflectionClass('Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient');
         $method = $reflector->getMethod('_setLinks');
         $method->setAccessible(true);
-        
+
         $this->assertEquals($this->client->getNextLink(), '');
         $this->assertEquals($this->client->getPrevLink(), '');
         $this->assertEquals($this->client->getLastLink(), '');
-        
+
         $method->invokeArgs($this->client, array());
 
         $this->assertEquals($this->client->getNextLink(), '');
         $this->assertEquals($this->client->getPrevLink(), 'https://harvest.greenhouse.io/v1/candidates?page=1&per_page=100');
-        $this->assertEquals($this->client->getLastLink(), 'https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100');    
+        $this->assertEquals($this->client->getLastLink(), 'https://harvest.greenhouse.io/v1/candidates?page=8273&per_page=100');
     }
 }
