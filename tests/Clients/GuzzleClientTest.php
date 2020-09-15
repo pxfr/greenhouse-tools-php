@@ -56,10 +56,34 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $testDoc = new \CURLFile($this->resumePath, 'application/msword', 'resume');
 
         $postVars = array(
-            'first_name' => 'Hiram',
-            'last_name' => 'Abiff',
-            'talents' => array('building', 'things', 'and', 'stuff'),
-            'resume' =>  $testDoc
+          'first_name' => 'Hiram',
+          'last_name' => 'Abiff',
+          'talents' => array('building', 'things', 'and', 'stuff'),
+          'resume' =>  $testDoc,
+          'demographic_answers' => [
+            [
+              'question_id' => '1',
+              'answer_options' => [
+                ['answer_option_id' => '100'],
+                ['answer_option_id' => '101']
+              ]
+            ]
+          ],
+          'educations' => [
+            [
+              "school_name_id"=>5417077,
+              "degree_id" => 5494452,
+              "discipline_id" => 5494865,
+              "start_date" => [
+                "month" => 8,
+                "year" => 2012
+              ],
+              "end_date" => [
+                "month" => 5,
+                "year" => 2016
+              ]
+            ]
+          ]
         );
 
         $response = $this->client->formatPostParameters($postVars);
@@ -72,6 +96,22 @@ class GuzzleClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($response[5], ['name' => 'talents[]', 'contents' => 'stuff']);
         $this->assertEquals($response[6]['name'],       'resume');
         $this->assertEquals($response[6]['filename'],   'resume');
+        $this->assertEquals($response[7], ['name' => 'demographic_answers[]question_id', 'contents' => '1']);
+        $this->assertEquals($response[8], [
+          'name' => 'demographic_answers[]answer_options[][answer_option_id]',
+          'contents' => '100'
+        ]);
+        $this->assertEquals($response[9], [
+          'name' => 'demographic_answers[]answer_options[][answer_option_id]',
+          'contents' => '101'
+        ]);
+        $this->assertEquals($response[10], ['name' => 'educations[]school_name_id', 'contents' => '5417077']);
+        $this->assertEquals($response[11], ['name' => 'educations[]degree_id', 'contents' => '5494452']);
+        $this->assertEquals($response[12], ['name' => 'educations[]discipline_id', 'contents' => '5494865']);
+        $this->assertEquals($response[13], ['name' => 'educations[]start_date[month]', 'contents' => '8']);
+        $this->assertEquals($response[14], ['name' => 'educations[]start_date[year]', 'contents' => '2012']);
+        $this->assertEquals($response[15], ['name' => 'educations[]end_date[month]', 'contents' => '5']);
+        $this->assertEquals($response[16], ['name' => 'educations[]end_date[year]', 'contents' => '2016']);
     }
 
     public function testLinksAllIncluded()
