@@ -1638,5 +1638,61 @@ class HarvestServiceTest extends \PHPUnit_Framework_TestCase
         $this->harvestService->getUserRoles($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
-    }    
+    }
+
+    public function testGetHiringTeamForJob()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'jobs/12345/hiring_team',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getHiringTeamForJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testPostHiringTeamForJob()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'jobs/12345/hiring_team',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->postHiringTeamForJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testDeleteHiringTeamForJob()
+    {
+        $expected = array(
+            'method' => 'delete',
+            'url' => 'jobs/12345/hiring_team',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"update_body":"json"}',
+            'id' => 12345
+        );
+
+        $this->harvestService->deleteHiringTeamForJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
 }
