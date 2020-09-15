@@ -243,7 +243,28 @@ class HarvestService extends ApiService
         $this->_harvest['url'] = 'users/' . $parameters['id'] . '/disable';
         $this->sendRequest();
     }
+
+    public function getHiringTeamForJob($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getHiringTeamForJob', $parameters);
+        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
+        $this->sendRequest();
+    }
     
+    public function postHiringTeamForJob($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('postHiringTeamForJob', $parameters);
+        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
+        $this->sendRequest();
+    }
+
+    public function deleteHiringTeamForJob($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('deleteHiringTeamForJob', $parameters);
+        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
+        $this->sendRequest();
+    }
+
     private function _trimUrlAndSendRequest()
     {
         $this->_harvest['url'] = substr($this->_harvest['url'], 0, -1);
