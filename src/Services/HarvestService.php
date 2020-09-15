@@ -247,22 +247,19 @@ class HarvestService extends ApiService
     public function getHiringTeamForJob($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('getHiringTeamForJob', $parameters);
-        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
-        $this->sendRequest();
+        $this->_trimUrlAndSendRequest();
     }
     
     public function postHiringTeamForJob($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('postHiringTeamForJob', $parameters);
-        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
-        $this->sendRequest();
+        $this->_trimUrlAndSendRequest();
     }
 
     public function deleteHiringTeamForJob($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('deleteHiringTeamForJob', $parameters);
-        $this->_harvest['url'] = 'jobs/' . $parameters['id'] . '/hiring_team';
-        $this->sendRequest();
+        $this->_trimUrlAndSendRequest();
     }
 
     private function _trimUrlAndSendRequest()
