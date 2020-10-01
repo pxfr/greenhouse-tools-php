@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5035e5f4a788a8ac14b5ae553aed57b1",
+    "content-hash": "995f039eb3f66a2e72b7c853f016788d",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -1887,52 +1887,6 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
-            "name": "solano/solano-phpunit",
-            "version": "v0.1.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/solanolabs/solano-phpunit.git",
-                "reference": "4f6ee9e1fadb3a479cc2d999dd862422722d4923"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/solanolabs/solano-phpunit/zipball/4f6ee9e1fadb3a479cc2d999dd862422722d4923",
-                "reference": "4f6ee9e1fadb3a479cc2d999dd862422722d4923",
-                "shasum": ""
-            },
-            "require": {
-                "phpunit/phpunit": "^4.0|^5.0"
-            },
-            "bin": [
-                "solano-phpunit"
-            ],
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Isaac Chapman",
-                    "email": "isaac@solanolabs.com",
-                    "role": "lead"
-                }
-            ],
-            "description": "Parallel testing for Solano CI",
-            "homepage": "https://www.solanolabs.com/",
-            "keywords": [
-                "ci",
-                "concurrent",
-                "parallel",
-                "phpunit",
-                "solano",
-                "testing"
-            ],
-            "time": "2017-06-08T18:38:02+00:00"
-        },
-        {
             "name": "symfony/polyfill-ctype",
             "version": "v1.18.1",
             "source": {
@@ -2139,6 +2093,8 @@
     "platform": {
         "php": ">=5.6"
     },
-    "platform-dev": [],
+    "platform-dev": {
+        "php": ">=5.6"
+    },
     "plugin-api-version": "1.1.0"
 }
