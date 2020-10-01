@@ -4,9 +4,9 @@ namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 
 use Greenhouse\GreenhouseToolsPhp\Services\JobBoardService;
 
-class JobBoardServiceTest extends \PHPUnit_Framework_TestCase
+class JobBoardServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->jobBoardService = new JobBoardService('test_token');
     }

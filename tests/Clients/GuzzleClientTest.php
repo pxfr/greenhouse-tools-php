@@ -5,9 +5,9 @@ namespace Greenhouse\GreenhouseToolsPhp\Tests\Clients;
 use Greenhouse\GreenhouseToolsPhp\Clients\GuzzleClient;
 use Greenhouse\GreenhouseToolsPhp\Tests\Clients\Mocks\MockGuzzleResponse;
 
-class GuzzleClientTest extends \PHPUnit_Framework_TestCase
+class GuzzleClientTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->client = new GuzzleClient(array('base_uri' => 'http://www.example.com'));
         $this->resumePath = realpath(dirname(__FILE__)) . '/../files/documents/test_resume.docx';

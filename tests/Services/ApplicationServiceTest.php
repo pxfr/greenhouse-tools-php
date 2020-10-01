@@ -5,9 +5,9 @@ namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 use Greenhouse\GreenhouseToolsPhp\Services\ApplicationService;
 use Greenhouse\GreenhouseToolsPhp\Services\JobApiService;
 
-class ApplicationServiceTest extends \PHPUnit_Framework_TestCase
+class ApplicationServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->appService = new ApplicationService('test_api_key', 'greenhouse');
     }
