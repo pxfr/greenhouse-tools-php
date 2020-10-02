@@ -6,9 +6,9 @@ use Greenhouse\GreenhouseToolsPhp\Services\ApiService;
 use Greenhouse\GreenhouseToolsPhp\Services\JobApiService;
 use Greenhouse\GreenhouseToolsPhp\Services\ApplicationService;
 
-class ApiServiceTest extends \PHPUnit_Framework_TestCase
+class ApiServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->apiService = new ApiService();
     }

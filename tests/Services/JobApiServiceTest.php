@@ -4,9 +4,9 @@ namespace Greenhouse\GreenhouseToolsPhp\Tests\Services;
 
 use Greenhouse\GreenhouseToolsPhp\Services\JobApiService;
 
-class JobApiServiceTest extends \PHPUnit_Framework_TestCase
+class JobApiServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->jobApiService = new JobApiService('greenhouse');
         $this->errorService  = new JobApiService('exception_co');

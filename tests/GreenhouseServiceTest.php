@@ -5,9 +5,9 @@ namespace Greenhouse\GreenhouseToolsPhp\Tests;
 use Greenhouse\GreenhouseToolsPhp\GreenhouseService;
 use Greenhouse\GreenhouseToolsPhp\Services\ApiService;
 
-class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
+class GreenhouseServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->apiKey       = 'testapikey';
         $this->boardToken   = 'test_token';
@@ -42,7 +42,7 @@ class GreenhouseServiceTest extends \PHPUnit_Framework_TestCase
             '\Greenhouse\GreenhouseToolsPhp\Services\JobBoardService',
             $service
         );
-        $this->assertContains($this->boardToken, $service->scriptTag());
+        $this->assertStringContainsString($this->boardToken, $service->scriptTag());
     }
     
     public function testGetJobApiService()

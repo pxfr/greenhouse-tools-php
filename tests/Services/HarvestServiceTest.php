@@ -10,9 +10,9 @@ use Greenhouse\GreenhouseToolsPhp\GreenhouseService;
  * test the response from harvest and, in most cases, that the responses are valid.  Harvest is expected
  * to reject invalid requests.
  */
-class HarvestServiceTest extends \PHPUnit_Framework_TestCase
+class HarvestServiceTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $this->harvestService = new HarvestService('greenhouse');
         $apiStub = $this->getMockBuilder('\Greenhouse\GreenhouseToolsPhp\Client\GuzzleClient')

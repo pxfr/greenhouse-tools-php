@@ -7,9 +7,9 @@ use Greenhouse\GreenhouseToolsPhp\Tools\HarvestHelper;
 /**
  * This test is not exhaustive and should be added to as more uses for JsonHelper come up.
  */
-class HarvestHelperTest extends \PHPUnit_Framework_TestCase
+class HarvestHelperTest extends \PHPUnit\Framework\TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         $root = realpath(dirname(__FILE__));
         $this->json = file_get_contents("$root/../files/test_json/single_job_response.json");
