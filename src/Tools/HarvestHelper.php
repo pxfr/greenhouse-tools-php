@@ -54,14 +54,16 @@ class HarvestHelper
             
         // Double object, expect the format object/id/object
         } else if (sizeof($objects) == 2) {
-            if (!$id) throw new GreenhouseServiceException("Harvest Service: method call $methodText must include an id parameter");
-            $url = $this->_decamelizeAndPluralize($objects[1]) . "/$id/" . $this->_decamelizeAndPluralize($objects[0]);
+            $url = $this->_decamelizeAndPluralize($objects[1]) .
+                    $this->_getDivider($id) .
+                    $this->_decamelizeAndPluralize($objects[0]);
             $url = $secondId ? $url . '/' . $secondId : $url;
         
         // Triple object, expect the format object/id/object/object
         } else if (sizeof($objects) == 3) {
             if (!$id) throw new GreenhouseServiceException("Harvest Service: method call $methodText must include an id parameter");
-            $url = $this->_decamelizeAndPluralize($objects[2]) . "/$id/" . 
+            $url = $this->_decamelizeAndPluralize($objects[2]) .
+                    $this->_getDivider($id) .
                     $this->_decamelizeAndPluralize($objects[0]) . '/' . 
                     $this->_decamelizeAndPluralize($objects[1]);
         } else {
@@ -78,6 +80,11 @@ class HarvestHelper
         } else {
             return $url;
         }
+    }
+
+    private function _getDivider($id)
+    {
+        return $id ? "/$id/" : '/';
     }
     
     private function _decamelizeAndPluralize($string)
