@@ -270,21 +270,24 @@ class HarvestService extends ApiService
         } else {
             $this->_harvest['url'] = 'demographics/question_sets';
         }
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getQuestionsForQuestionSetsForDemographics($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('getQuestionsForQuestionSetsForDemographics', $parameters);
         $this->_harvest['url'] = 'demographics/question_sets/' . $parameters['id'] . '/questions';
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getAnswerOptionsForQuestionsForDemographics($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('getAnswerOptionsForQuestionsForDemographics', $parameters);
         $this->_harvest['url'] = 'demographics/questions/' . $parameters['id'] . '/answer_options';
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getQuestionsForDemographics($parameters=array())
@@ -295,7 +298,8 @@ class HarvestService extends ApiService
         } else {
             $this->_harvest['url'] = 'demographics/questions';
         }
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getAnswerOptionsForDemographics($parameters=array())
@@ -306,7 +310,8 @@ class HarvestService extends ApiService
         } else {
             $this->_harvest['url'] = 'demographics/answer_options';
         }
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getAnswersForDemographics($parameters=array())
@@ -317,7 +322,8 @@ class HarvestService extends ApiService
         } else {
             $this->_harvest['url'] = 'demographics/answers';
         }
-        $this->sendRequest();
+
+        return $this->sendRequest();
     }
 
     public function getDemographicAnswersForApplications($parameters=array())
