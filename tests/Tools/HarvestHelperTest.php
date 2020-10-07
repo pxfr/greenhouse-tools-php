@@ -156,19 +156,6 @@ class HarvestHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->parser->parse('getEmailTemplateForActivityFeed', $params));
     }
 
-    public function testParseGetDoubleWordMethodWithForSecondIdOnly()
-    {
-        $expected = array(
-            'method' => 'get',
-            'url' => 'activity_feeds/email_templates/2345',
-            'parameters' => $this->parameters,
-            'headers' => array(),
-            'body' => null
-        );
-        $params = array_merge($this->parameters, array('second_id' => 2345));
-        $this->assertEquals($expected, $this->parser->parse('getEmailTemplateForActivityFeed', $params));
-    }
-
     public function testParseTripleWordMethod()
     {
         $expected = array(

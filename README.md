@@ -10,7 +10,7 @@ This package of tools is provided by Greenhouse for customers who use PHP.  Ther
 # Requirements
 1. PHP Version 
     - 5.6 or greater for V1.
-   -  7.3 or greater for V2.
+    - 7.3 or greater for V2.
 2. [Composer](https://getcomposer.org/).  You should be using Composer to manage this package. 
 
 Due to the EOL on PHP 5 and Guzzle 6, this package was upgraded to require PHP 7.3. We will no longer be supporting V1. Going forward, new features will be added exclusively to the 2.0 branch. You should update to 2.0 as soon as reasonably possible.
@@ -23,9 +23,7 @@ This is available on Packagist.  Install via Composer.  Add the following to you
 ```
 
 # New In 2.1
-In order to suppor Greenhouse's new Inclusion URLs, we dropped a requirement that and $id be included for some URLs. Previously, a URL like `getActivityFeedForUser()` would throw a Greenhouse Exception with a message that $id was required. Now, that method will just translate to `user/activity_feed` and return a 404 Not Found response. We did this in order to support Greenhouse's new Inclusion URLs. In the previous version `getQuestionsSetsForDemographics()`, [(found here)](https://developers.greenhouse.io/harvest.html#get-list-demographic-question-sets) would have thrown an "id required" exception instead of correctly routing to `demographics/question_sets`.
-
-Additionally, in order to support the formatting of Inclusion URLs, you may now include a `second_id` by itself. This allows us to propery construct, for example, the URL to a [specific question set](https://developers.greenhouse.io/harvest.html#get-retrieve-demographic-question-set). This would be in the format `getQuestionSetsForDemographics(['end_id' => 11234]);` and would route to the URL `demographics/question_sets/11234`.
+In order to support Greenhouse's new Inclusion URLs, we dropped a requirement that an $id be included for some URLs. Previously, a URL like `getActivityFeedForUser()` would throw a Greenhouse Exception with a message that id was required. Now, that method will just translate to `user/activity_feed` and return a 404 Not Found response. We did this in order to support Greenhouse's new Inclusion URLs. In the previous version `getQuestionsSetsForDemographics()`, [(found here)](https://developers.greenhouse.io/harvest.html#get-list-demographic-question-sets), would have thrown an "id required" exception instead of correctly routing to `demographics/question_sets`.
 
 # New in 2.0
 Support for PHP 5.6, 7.0, 7.1, and 7.2 were dropped in order to support the latest version of Guzzle.
