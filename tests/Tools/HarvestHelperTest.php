@@ -145,10 +145,17 @@ class HarvestHelperTest extends \PHPUnit\Framework\TestCase
     
     public function testParseGetDoubleWordMethodWithForNoId()
     {
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->parser->parse('getScorecardsForApplication', array());
+        $expected = array(
+            'method' => 'get',
+            'url' => 'activity_feeds/email_templates',
+            'parameters' => $this->parameters,
+            'headers' => array(),
+            'body' => null
+        );
+        $params = array_merge($this->parameters, array());
+        $this->assertEquals($expected, $this->parser->parse('getEmailTemplateForActivityFeed', $params));
     }
-    
+
     public function testParseTripleWordMethod()
     {
         $expected = array(
@@ -167,7 +174,7 @@ class HarvestHelperTest extends \PHPUnit\Framework\TestCase
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
         $this->parser->parse('deletePermissionForJobForUser', array());
     }
-    
+
     public function testBadHttpMethodFails()
     {
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');

@@ -262,6 +262,76 @@ class HarvestService extends ApiService
         $this->_trimUrlAndSendRequest();
     }
 
+    public function getQuestionSetsForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getQuestionSetsForDemographics', $parameters);
+        if (array_key_exists('id', $parameters) && $parameters['id']) {
+            $this->_harvest['url'] = 'demographics/question_sets/' . $parameters['id'];
+        } else {
+            $this->_harvest['url'] = 'demographics/question_sets';
+        }
+
+        return $this->sendRequest();
+    }
+
+    public function getQuestionsForQuestionSetsForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getQuestionsForQuestionSetsForDemographics', $parameters);
+        $this->_harvest['url'] = 'demographics/question_sets/' . $parameters['id'] . '/questions';
+
+        return $this->sendRequest();
+    }
+
+    public function getAnswerOptionsForQuestionsForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getAnswerOptionsForQuestionsForDemographics', $parameters);
+        $this->_harvest['url'] = 'demographics/questions/' . $parameters['id'] . '/answer_options';
+
+        return $this->sendRequest();
+    }
+
+    public function getQuestionsForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getQuestionsForDemographics', $parameters);
+        if (array_key_exists('id', $parameters) && $parameters['id']) {
+            $this->_harvest['url'] = 'demographics/questions/' . $parameters['id'];
+        } else {
+            $this->_harvest['url'] = 'demographics/questions';
+        }
+
+        return $this->sendRequest();
+    }
+
+    public function getAnswerOptionsForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getAnswerOptionsForDemographics', $parameters);
+        if (array_key_exists('id', $parameters) && $parameters['id']) {
+            $this->_harvest['url'] = 'demographics/answer_options/' . $parameters['id'];
+        } else {
+            $this->_harvest['url'] = 'demographics/answer_options';
+        }
+
+        return $this->sendRequest();
+    }
+
+    public function getAnswersForDemographics($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getAnswersForDemographics', $parameters);
+        if (array_key_exists('id', $parameters) && $parameters['id']) {
+            $this->_harvest['url'] = 'demographics/answers/' . $parameters['id'];
+        } else {
+            $this->_harvest['url'] = 'demographics/answers';
+        }
+
+        return $this->sendRequest();
+    }
+
+    public function getDemographicAnswersForApplications($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('getDemographicsForAnswersForApplications', $parameters);
+        return $this->sendRequest();
+    }
+
     private function _trimUrlAndSendRequest()
     {
         $this->_harvest['url'] = substr($this->_harvest['url'], 0, -1);

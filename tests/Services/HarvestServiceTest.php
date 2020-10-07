@@ -57,14 +57,6 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testGetActivityFeedRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->getActivityFeedForCandidate($params);
-    }
-    
     public function testGetApplicationsNoPaging()
     {
         $expected = array(
@@ -249,46 +241,6 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->harvestService->postUnrejectApplication($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
-    }
-    
-    public function testMoveApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->postMoveApplication($params);
-    }
-    
-    public function testAdvanceApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->postAdvanceApplication($params);
-    }
-    
-    public function testPostTransferApplicationToJobIdRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->postTransferApplicationToJob($params);
-    }
-    
-    public function testRejectApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->postRejectApplication($params);
-    }
-    
-    public function testPostUnrejectApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->postUnrejectApplication($params);
     }
 
     public function testGetCandidatesNoPaging()
@@ -1056,14 +1008,6 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testGetOffersForApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->getOffersForApplication($params);
-    }
-    
     public function testGetCurrentOfferForApplication()
     {
         $expected = array(
@@ -1078,14 +1022,6 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->harvestService->getCurrentOfferForApplication($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
-    }
-    
-    public function testGetCurrentOfferForApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->getCurrentOfferForApplication($params);
     }
     
     public function testGetOfficesNoPaging()
@@ -1301,14 +1237,6 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
-    public function testGetScorecardForApplicationRequiresId()
-    {
-        $params = array('noid' => 12345);
-        
-        $this->expectException('\Greenhouse\GreenhouseToolsPhp\Services\Exceptions\GreenhouseServiceException');
-        $this->harvestService->getScorecardsForApplication($params);
-    }
-
     public function testGetSourcesNoPaging()
     {
         $expected = array(
@@ -1692,6 +1620,182 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->harvestService->deleteHiringTeamForJob($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetQuestionSetsForDemographics()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/question_sets',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getQuestionSetsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetQuestionSetsForDemographicsWithId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/question_sets/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getQuestionSetsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetQuestionsForDemographics()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/questions',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getQuestionsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetQuestionsForDemographicsWithId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/questions/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getQuestionsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetQuestionsForQuestionSetsForDemographic()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/question_sets/12345/questions',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getQuestionsForQuestionSetsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetAnswerOptionsForDemographics()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/answer_options',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getAnswerOptionsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetAnswerOptionsForDemographicsWithId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/answer_options/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getAnswerOptionsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetAnswerOptionsForQuestionsForDemographicsWithId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/questions/12345/answer_options',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getAnswerOptionsForQuestionsForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetAnswersForDemographics()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/answers',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array();
+
+        $this->harvestService->getAnswersForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetAnswersForDemographicsWithId()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'demographics/answers/12345',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getAnswersForDemographics($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
+    public function testGetDemographicAnswersForApplication()
+    {
+        $expected = array(
+            'method' => 'get',
+            'url' => 'applications/12345/demographics/answers',
+            'headers' => array(),
+            'body' => null,
+            'parameters' => array()
+        );
+        $params = array('id' => 12345);
+
+        $this->harvestService->getDemographicAnswersForApplications($params);
         $this->assertEquals($expected, $this->harvestService->getHarvest());
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
