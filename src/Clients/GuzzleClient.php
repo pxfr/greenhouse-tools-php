@@ -66,7 +66,7 @@ class GuzzleClient implements ApiClientInterface
      * @return  string
      * @throws  GreenhouseAPIResponseException  for non-200 responses
      */
-    public function post(Array $postVars, Array $headers, $url=null)
+    public function post(Array $postVars, Array $headers, $url='')
     {
         try {
             $this->guzzleResponse = $this->_client->request(
