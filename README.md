@@ -161,6 +161,7 @@ Some method calls and URLs do not fit this format, but the methods were named as
   * `postUnrejectApplication`: [Unreject an application](https://developers.greenhouse.io/harvest.html#post-unreject-application)
   * `postMergeCandidates`: [Merge a duplicate candidate to a primary candidate.](https://developers.greenhouse.io/harvest.html#put-merge-candidates)
   * `getCandidateTags`: [Returns all candidate tags in your organization.](https://developers.greenhouse.io/harvest.html#get-list-candidate-tags)
+  * `postCandidateTags`: [Create a new candidate tag in your organization.](https://developers.greenhouse.io/harvest.html#post-add-new-candidate-tag)
   * `getTagsForCandidate`: [Returns all tags applied to a single candidate.](https://developers.greenhouse.io/harvest.html#get-list-tags-applied-to-candidate)
   * `getCustomFields`: [Returns all custom fields](https://developers.greenhouse.io/harvest.html#get-list-custom-fields): Note for this method, the id argument will contain the type of custom field you want to retrieve.  `$harvestService->getCustomFields(array('id' => 'job'));` will return all the job custom fields in your organization. Leaving this argument blank will return all custom fields.
   * `getTrackingLinks`: [Return a specific traking link for the supplied token.](https://developers.greenhouse.io/harvest.html#get-tracking-link-data-for-token): Note for this link, the token will be provided in the 'id' argument.  `$harvestService->getTrackingLink(array('id' => '<token>'));`
