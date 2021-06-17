@@ -230,6 +230,13 @@ class HarvestService extends ApiService
         return $this->sendRequest();
     }
     
+    public function postCandidateTags($parameters=array())
+    {
+        $this->_harvest = $this->_harvestHelper->parse('postCandidateTags', $parameters);
+        $this->_harvest['url'] = 'tags/candidate';
+        return $this->sendRequest();
+    }
+
     public function patchEnableUser($parameters=array())
     {
         $this->_harvest = $this->_harvestHelper->parse('patchEnableUser', $parameters);

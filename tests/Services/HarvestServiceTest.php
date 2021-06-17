@@ -1301,6 +1301,25 @@ class HarvestServiceTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
     }
     
+    public function testPostCandidateTags()
+    {
+        $expected = array(
+            'method' => 'post',
+            'url' => 'tags/candidate',
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"name":"Test Tag"}',
+            'parameters' => array()
+        );
+        $params = array(
+            'headers' => array('On-Behalf-Of' => 234),
+            'body' => '{"name":"Test Tag"}',
+        );
+
+        $this->harvestService->postCandidateTags($params);
+        $this->assertEquals($expected, $this->harvestService->getHarvest());
+        $this->assertEquals($this->expectedAuth, $this->harvestService->getAuthorizationHeader());
+    }
+
     public function testGetTagsForCandidate()
     {
         $expected = array(
