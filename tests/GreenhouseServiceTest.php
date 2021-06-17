@@ -54,7 +54,7 @@ class GreenhouseServiceTest extends \PHPUnit\Framework\TestCase
         );
         
         $this->assertEquals(
-            'https://api.greenhouse.io/v1/boards/test_token/embed/',
+            'https://boards-api.greenhouse.io/v1/boards/test_token/embed/',
             $service->getJobBoardBaseUrl()
         );
         

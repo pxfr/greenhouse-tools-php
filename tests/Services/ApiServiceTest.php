@@ -15,14 +15,14 @@ class ApiServiceTest extends \PHPUnit\Framework\TestCase
     
     public function testJobBoardBaseUrl()
     {
-        $expected = 'https://api.greenhouse.io/v1/boards/test_token/embed/';
+        $expected = 'https://boards-api.greenhouse.io/v1/boards/test_token/embed/';
         $this->assertEquals($expected, ApiService::jobBoardBaseUrl('test_token'));
     }
     
     public function testGetJobBoardBaseUrl()
     {
         $jobService = new JobApiService('test_token');
-        $expected = 'https://api.greenhouse.io/v1/boards/test_token/embed/';
+        $expected = 'https://boards-api.greenhouse.io/v1/boards/test_token/embed/';
         $this->assertEquals($expected, $jobService->getJobBoardBaseUrl());
     }
     
