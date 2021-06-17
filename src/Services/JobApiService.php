@@ -16,7 +16,7 @@ class JobApiService extends ApiService
 {
     /**
      * The client token is your job board token.  For instance in the following
-     * API get URL: https://api.greenhouse.io/v1/boards/example_co/embed/
+     * API get URL: https://boards-api.greenhouse.io/v1/boards/example_co/embed/
      * The board token is 'example_co'
      *
      * @param   string  $clientToken    As above

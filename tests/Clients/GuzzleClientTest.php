@@ -26,7 +26,7 @@ class GuzzleClientTest extends \PHPUnit\Framework\TestCase
 
     public function testGetException()
     {
-        $errorUrl = 'https://api.greenhouse.io/v1/boards/exception_co/embed/';
+        $errorUrl = 'https://boards-api.greenhouse.io/v1/boards/exception_co/embed/';
         $client = new GuzzleClient(array('base_uri' => $errorUrl));
         $this->expectException('\Greenhouse\GreenhouseToolsPhp\Clients\Exceptions\GreenhouseAPIResponseException');
         $response = $client->get('jobs');

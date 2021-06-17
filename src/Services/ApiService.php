@@ -11,8 +11,8 @@ class ApiService
     protected $_apiKey;
     protected $_authorizationHeader;
     
-    const APPLICATION_URL = 'https://api.greenhouse.io/v1/applications/';
-    const API_V1_URL = 'https://api.greenhouse.io/v1/';
+    const APPLICATION_URL = 'https://boards-api.greenhouse.io/v1/applications/';
+    const API_V1_URL = 'https://boards-api.greenhouse.io/v1/';
     const HARVEST_V1_URL = 'https://harvest.greenhouse.io/v1/';
     
     public function setClient($apiClient)
