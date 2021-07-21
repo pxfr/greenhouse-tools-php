@@ -152,7 +152,7 @@ class GuzzleClient implements ApiClientInterface
      */
     private function _setLinks()
     {
-        $links = Psr7\parse_header($this->guzzleResponse->getHeader('Link'));
+        $links = Psr7\Header::parse($this->guzzleResponse->getHeader('Link'));
         foreach ($links as $link) {
             if ($link['rel'] == 'last') {
                 $this->_lastLink = str_replace(['<', '>'], '', $link[0]);
