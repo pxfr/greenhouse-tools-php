@@ -22,6 +22,10 @@ This is available on Packagist.  Install via Composer.  Add the following to you
     "grnhse/greenhouse-tools-php": "~2.0"
 ```
 
+# New In 2.2
+- Represents a minor version upgrade from Guzzle 7.1 to 7.5.
+- Adds support for versions of Greenhouse endpoints beyond v1.
+
 # New In 2.1
 In order to support Greenhouse's new Inclusion URLs, we dropped a requirement that an $id be included for some URLs. Previously, a URL like `getActivityFeedForUser()` would throw a Greenhouse Exception with a message that id was required. Now, that method will just translate to `user/activity_feed` and return a 404 Not Found response. We did this in order to support Greenhouse's new Inclusion URLs. In the previous version `getQuestionsSetsForDemographics()`, [(found here)](https://developers.greenhouse.io/harvest.html#get-list-demographic-question-sets), would have thrown an "id required" exception instead of correctly routing to `demographics/question_sets`.
 
