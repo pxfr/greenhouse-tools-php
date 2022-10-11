@@ -13,8 +13,8 @@ jobs:
       - image: circleci/php:<< parameters.php-version >>-node-browsers
     steps:
       - checkout
-      - run: sudo apt update
-      - run: sudo docker-php-ext-install zip
+      - setup_remote_docker:
+          version: 20.10.17
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "composer.json" }}
@@ -31,4 +31,4 @@ workflows:
       - test:
           matrix:
             parameters:
-              php-version: ["7.3", "7.4"]
+              php-version: ["7.3", "7.4", "8.0"]

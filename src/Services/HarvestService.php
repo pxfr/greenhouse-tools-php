@@ -14,11 +14,21 @@ class HarvestService extends ApiService
 {
     private $_harvestHelper;
     private $_harvest;
-    
-    public function __construct($apiKey)
+
+    /**
+     * This gives a Harvest service keyed to a specific version of the API. Version in the Harvest API is defined
+     * in the URL. It is normal for some endpoints to skip versions.
+     *
+     * @params apiKey   string  This is your Harvest API key.
+     * @params version  string  The version of the API endpoint you expect to hit. For example, v1, the default,
+     *  will set the base_uri to harvest.greenhouse.io/v1, while 'v2' will set it to harvest.greenhouse.io/v2
+     *  If your code hits two separate version of the API, you will need two different active services. There is
+     *  currently not provided a mechanism to alter the base uri in this service.
+     */
+    public function __construct($apiKey, $version='v1')
     {
         $this->_apiKey = $apiKey;
-        $client = new GuzzleClient(array('base_uri' => self::HARVEST_V1_URL));
+        $client = new GuzzleClient(array('base_uri' => self::HARVEST_BASE_URL . $version . '/'));
         $this->setClient($client);
         $this->_authorizationHeader = $this->getAuthorizationHeader($apiKey);
         $this->_harvestHelper = new HarvestHelper();
