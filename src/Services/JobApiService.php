@@ -102,15 +102,18 @@ class JobApiService extends ApiService
     /**
      * GET $baseUrl/job?id=$id(?questions=true)
      *
-     * @param   $id         number      The id of the job to retrieve
-     * @param   $question   boolean     Append the question paramenter to get the
-     *                                      question info in the job response.
-     * @return  string      JSON response string from Greenhouse API.
+     * @param   $id                 number      The id of the job to retrieve
+     * @param   $question           boolean     Append the question paramenter to get the
+     *                                              question info in the job response.
+     * @param   $payTransparency    boolean     Append the pay_transparency paramenter to get the
+     *                                              pay transparency info in the job response.
+     * @return  string              JSON response string from Greenhouse API.
      * @throws  GreenhouseAPIResponseException for non-200 responses
      */
-    public function getJob($id, $questions=false)
+    public function getJob($id, $questions=false, $payTransparency=false)
     {
         $queryString = $this->getQuestionsQuery("job?id=$id", $questions);
+        $queryString = $this->getPayTransparencyQuery($queryString, $payTransparency);
         return $this->_apiClient->get($queryString);
     }
     
@@ -134,6 +137,15 @@ class JobApiService extends ApiService
     public function getQuestionsQuery($uriString, $showQuestions=false)
     {
         $queryString = $showQuestions ? '&questions=true' : '';
+        return $uriString . $queryString;
+    }
+    
+    /**
+     * Shortcut method appends pay_transparency=true to the query string for a single
+     */
+    public function getPayTransparencyQuery($uriString, $showPayTransparency=false)
+    {
+        $queryString = $showPayTransparency ? '&pay_transparency=true' : '';
         return $uriString . $queryString;
     }
 }
